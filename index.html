@@ -3,331 +3,454 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NovaHost - Premium Minecraft Server Hosting by OGBISCUTdev</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    <title>OG Sloth - Full Stack Developer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
         body {
-            font-family: 'Orbitron', monospace;
-            background: linear-gradient(135deg, #0a0a0a 0%, #1a0a2e 50%, #16213e 100%);
-            color: #00ff88;
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: #333;
             overflow-x: hidden;
-            position: relative;
         }
-        body::before {
-            content: '';
+        /* Navigation */
+        nav {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 1rem 0;
             position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: 
-                radial-gradient(circle at 20% 80%, rgba(120,119,198,0.3) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(255,255,255,0.1) 0%, transparent 50%),
-                radial-gradient(circle at 40% 40%, rgba(0,255,136,0.1) 0%, transparent 50%);
-            pointer-events: none;
-            z-index: -1;
-            animation: float 20s ease-in-out infinite;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
         }
-        @keyframes float { 0%,100%{transform:translateY(0) rotate(0deg);} 50%{transform:translateY(-20px) rotate(1deg);} }
+        nav .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: white;
+            text-decoration: none;
+        }
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: opacity 0.3s;
+        }
+        .nav-links a:hover {
+            opacity: 0.8;
+        }
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+        }
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: white;
+            margin: 3px 0;
+            transition: 0.3s;
+        }
         
-        .particles {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1;
-        }
-        .particle {
-            position: absolute; width: 4px; height: 4px; background: #00ff88; border-radius: 50%;
-            animation: particle-float 15s linear infinite;
-        }
-        @keyframes particle-float {
-            0% { transform: translateY(100vh) scale(0); opacity: 1; }
-            100% { transform: translateY(-100px) scale(1); opacity: 0; }
-        }
-        
+        /* Hero Section */
         .hero {
-            text-align: center; padding: 80px 20px; position: relative; z-index: 2;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 120px 0 80px;
+            text-align: center;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
         }
         .hero h1 {
-            font-size: clamp(2.5rem, 8vw, 6rem); font-weight: 900; margin-bottom: 20px;
-            background: linear-gradient(45deg, #00ff88, #00ccff, #ff00ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            animation: glow 2s ease-in-out infinite alternate;
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
-        @keyframes glow { from { filter: drop-shadow(0 0 10px #00ff88); } to { filter: drop-shadow(0 0 30px #00ff88); } }
-        .hero p { font-size: 1.3rem; margin-bottom: 40px; opacity: 0.9; }
-        .cta-btn {
-            display: inline-block; padding: 18px 40px; background: linear-gradient(45deg, #00ff88, #00ccff);
-            color: #000; text-decoration: none; font-weight: 700; font-size: 1.2rem; border-radius: 50px;
-            transition: all 0.3s; box-shadow: 0 10px 30px rgba(0,255,136,0.4);
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            color: #666;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
         }
-        .cta-btn:hover {
-            transform: translateY(-5px); box-shadow: 0 20px 50px rgba(0,255,136,0.6); background: linear-gradient(45deg, #00ccff, #00ff88);
+        .btn {
+            display: inline-block;
+            padding: 15px 40px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.6);
+        }
+        .social-links {
+            margin-top: 3rem;
+        }
+        .social-links a {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+            margin: 0 15px;
+            transition: color 0.3s;
+        }
+        .social-links a:hover {
+            color: #764ba2;
         }
         
-        .container { max-width: 1400px; margin: 0 auto; padding: 0 20px; }
-        .dual-section {
-            display: grid; grid-template-columns: 1fr 1fr; gap: 60px; margin: 80px 0; align-items: start;
+        /* Services Section */
+        .section {
+            padding: 100px 0;
         }
-        @media (max-width: 1024px) { .dual-section { grid-template-columns: 1fr; gap: 40px; } }
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 4rem;
+            color: #333;
+        }
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        .service-card {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+            border-top: 4px solid transparent;
+        }
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 30px 80px rgba(0,0,0,0.15);
+        }
+        .service-card i {
+            font-size: 3rem;
+            color: #667eea;
+            margin-bottom: 1.5rem;
+        }
+        .service-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #333;
+        }
         
-        .dev-section { background: rgba(0,255,136,0.05); padding: 40px; border-radius: 20px; border: 1px solid rgba(0,255,136,0.2); }
-        .dev-section h2 {
-            font-size: 2.5rem; text-align: center; margin-bottom: 30px; color: #00ff88;
-            text-shadow: 0 0 20px #00ff88;
+        /* Portfolio */
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
         }
-        .skills {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 40px;
-        }
-        .skill-card {
-            background: rgba(26,10,46,0.5); padding: 25px; border-radius: 15px; text-align: center;
-            border: 1px solid rgba(0,255,136,0.3); transition: all 0.3s; backdrop-filter: blur(10px);
-        }
-        .skill-card:hover { transform: translateY(-10px); border-color: #00ff88; box-shadow: 0 20px 40px rgba(0,255,136,0.2); }
-        .skill-icon { font-size: 3rem; margin-bottom: 15px; }
-        .vouches {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px;
-        }
-        .vouch {
-            background: rgba(0,204,255,0.1); padding: 20px; border-radius: 12px; border-left: 4px solid #00ccff;
-            animation: slideIn 0.5s ease forwards; opacity: 0; transform: translateX(-30px);
-        }
-        .vouch:nth-child(1) { animation-delay: 0.1s; }
-        .vouch:nth-child(2) { animation-delay: 0.2s; }
-        .vouch:nth-child(3) { animation-delay: 0.3s; }
-        .vouch:nth-child(4) { animation-delay: 0.4s; }
-        .vouch:nth-child(5) { animation-delay: 0.5s; }
-        @keyframes slideIn { to { opacity: 1; transform: translateX(0); } }
-        .vouch strong { color: #00ff88; display: block; margin-bottom: 8px; }
-        
-        .hosting-section { 
-            background: rgba(255,0,255,0.05); padding: 40px; border-radius: 20px; border: 1px solid rgba(255,0,255,0.2);
-        }
-        .hosting-section h2 {
-            font-size: 2.5rem; text-align: center; margin-bottom: 30px; color: #ff00ff; text-shadow: 0 0 20px #ff00ff;
-        }
-        .plans-tabs {
-            display: flex; background: rgba(0,0,0,0.5); border-radius: 12px; margin-bottom: 30px; overflow: hidden;
-        }
-        .tab-btn {
-            flex: 1; padding: 15px; background: none; border: none; color: #aaa; font-family: inherit; font-size: 1.1rem;
-            cursor: pointer; transition: all 0.3s;
-        }
-        .tab-btn.active { background: linear-gradient(45deg, #00ff88, #ff00ff); color: #000; font-weight: 700; }
-        .tab-content { display: none; animation: fadeIn 0.4s ease; }
-        .tab-content.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        .plans-grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px;
-        }
-        .plan-card {
-            background: rgba(26,10,46,0.6); padding: 30px 20px; border-radius: 20px; text-align: center;
-            border: 2px solid rgba(0,255,136,0.3); transition: all 0.4s; backdrop-filter: blur(15px); position: relative;
+        .portfolio-item {
+            background: white;
+            border-radius: 20px;
             overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
         }
-        .plan-card::before {
-            content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            transition: left 0.5s;
+        .portfolio-item:hover {
+            transform: translateY(-10px);
         }
-        .plan-card:hover::before { left: 100%; }
-        .plan-card:hover {
-            transform: translateY(-15px) scale(1.02); border-color: #00ff88; box-shadow: 0 30px 60px rgba(0,255,136,0.4);
+        .portfolio-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
         }
-        .plan-card.featured { border-color: #ff00ff; box-shadow: 0 0 40px rgba(255,0,255,0.5); }
-        .plan-card.featured .plan-name::after { content: 'RECOMMENDED'; position: absolute; top: 15px; right: 15px; background: #ff00ff; color: #000; padding: 5px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 700; }
-        .plan-name { font-size: 1.6rem; font-weight: 900; margin-bottom: 15px; color: #00ff88; }
-        .plan-price { font-size: 2.2rem; font-weight: 900; color: #ff00ff; margin-bottom: 20px; }
-        .plan-specs { list-style: none; margin-bottom: 25px; }
-        .plan-specs li { padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.1); }
-        .discord-link { color: #00ccff; font-weight: 700; }
+        .portfolio-content {
+            padding: 2rem;
+        }
         
-        .terms { background: rgba(0,0,0,0.7); padding: 40px; border-radius: 20px; margin-top: 60px; text-align: center; }
-        .terms h3 { color: #ff00ff; margin-bottom: 20px; font-size: 1.8rem; }
-        .terms ul { text-align: left; max-width: 800px; margin: 0 auto; }
-        .terms li { margin-bottom: 12px; opacity: 0.9; }
+        /* Contact */
+        .contact {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .contact-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+        .contact-info h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        .contact-form {
+            background: rgba(255,255,255,0.1);
+            padding: 2rem;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+        }
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            background: rgba(255,255,255,0.9);
+            font-family: inherit;
+        }
+        .form-group textarea {
+            height: 120px;
+            resize: vertical;
+        }
         
+        /* Footer */
+        footer {
+            background: #1a1a1a;
+            color: white;
+            text-align: center;
+            padding: 3rem 0 1rem;
+        }
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        .footer-links a {
+            color: #667eea;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        .footer-links a:hover {
+            color: white;
+        }
+        
+        /* Legal Pages */
+        .legal-page {
+            max-width: 800px;
+            margin: 4rem auto;
+            padding: 2rem;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+        }
+        .legal-page h1 {
+            color: #667eea;
+            margin-bottom: 2rem;
+        }
+        .legal-page h2 {
+            color: #333;
+            margin: 2rem 0 1rem;
+        }
+        
+        /* Responsive */
         @media (max-width: 768px) {
-            .dual-section { margin: 40px 0; }
-            .dev-section, .hosting-section { padding: 30px 20px; }
-            .plans-tabs { flex-direction: column; }
+            .hamburger {
+                display: flex;
+            }
+            .nav-links {
+                display: none;
+            }
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            .contact-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            .footer-links {
+                flex-direction: column;
+                gap: 1rem;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="particles" id="particles"></div>
-    
-    <section class="hero">
+    <!-- Navigation -->
+    <nav>
         <div class="container">
-            <h1>NovaHost</h1>
-            <p>Premium Minecraft Server Hosting 🚀 Powered by OGBISCUTdev</p>
-            <a href="https://discord.gg/j8HTzDHuNK" class="cta-btn" target="_blank">Get Started Now</a>
+            <a href="index.html" class="logo">OG Sloth</a>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#portfolio">Portfolio</a></li>
+                <li><a href="#contact">Contact</a></li>
+                <li><a href="terms.html">Terms</a></li>
+                <li><a href="privacy.html">Privacy</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="container">
+            <h1>OG Sloth</h1>
+            <p>Full Stack Developer | Minecraft Server Dev | Discord Bot Expert | Website Wizard</p>
+            <a href="#contact" class="btn">Get In Touch</a>
+            <div class="social-links">
+                <a href="https://discord.com/users/ogslothhh12" target="_blank">
+                    <i class="fab fa-discord"></i> ogslothhh12
+                </a>
+            </div>
         </div>
     </section>
-    
-    <div class="container">
-        <div class="dual-section">
-            <!-- OGBISCUTdev Section (Left/Top) -->
-            <div class="dev-section">
-                <h2>OGBISCUTdev</h2>
-                <div class="skills">
-                    <div class="skill-card">
-                        <div class="skill-icon">🟩</div>
-                        <h3>Minecraft Servers</h3>
-                        <p>Custom plugins, optimization, anti-cheat</p>
-                    </div>
-                    <div class="skill-card">
-                        <div class="skill-icon">🌐</div>
-                        <h3>Websites</h3>
-                        <p>Premium hosting sites, responsive design</p>
-                    </div>
-                    <div class="skill-card">
-                        <div class="skill-icon">🤖</div>
-                        <h3>Discord Bots</h3>
-                        <p>Moderation, music, custom commands</p>
-                    </div>
+
+    <!-- Services -->
+    <section id="services" class="section">
+        <div class="container">
+            <h2 class="section-title">What I Do</h2>
+            <div class="services-grid">
+                <div class="service-card">
+                    <i class="fas fa-globe"></i>
+                    <h3>Website Development</h3>
+                    <p>Modern, responsive websites with premium designs. React, Next.js, Node.js, and more.</p>
                 </div>
-                <div class="vouches">
-                    <div class="vouch"><strong>@Player1</strong>Best hosting ever! 5/5</div>
-                    <div class="vouch"><strong>@GamerPro</strong>Lightning fast servers 🔥</div>
-                    <div class="vouch"><strong>@MineCraftKing</strong>OGBISCUTdev is a legend! Fixed everything</div>
-                    <div class="vouch"><strong>@ServerAdmin</strong>20 players no lag, perfect!</div>
-                    <div class="vouch"><strong>@DevFan</strong>Custom plugins work amazing</div>
-                    <!-- 20+ vouches pattern continues similarly - fixed 3rd vouch formatting -->
-                    <div class="vouch"><strong>@UltraHost</strong>Cheapest premium hosting</div>
-                    <div class="vouch"><strong>@BlockMaster</strong>Reliable 24/7 uptime</div>
-                    <div class="vouch"><strong>@PixelPioneer</strong>Support responds instantly</div>
-                    <div class="vouch"><strong>@CraftLegend</strong>Best Ryzen plans!</div>
-                    <div class="vouch"><strong>@NovaUser</strong>Easy Discord setup</div>
+                <div class="service-card">
+                    <i class="fab fa-minecraft"></i>
+                    <h3>Minecraft Servers</h3>
+                    <p>Custom Minecraft servers, plugins, mods, and optimization for any version.</p>
                 </div>
-                <div style="text-align: center; margin-top: 30px;">
-                    <p>DM <strong>@ogslothhh12</strong> on Discord</p>
-                    <a href="https://discord.gg/j8HTzDHuNK" class="cta-btn" style="padding: 15px 30px; font-size: 1.1rem;" target="_blank">Contact Developer</a>
+                <div class="service-card">
+                    <i class="fab fa-discord"></i>
+                    <h3>Discord Development</h3>
+                    <p>Advanced Discord bots with music, moderation, economy, and custom features.</p>
+                </div>
+                <div class="service-card">
+                    <i class="fas fa-code"></i>
+                    <h3>Full Stack Development</h3>
+                    <p>Complete web applications from frontend to backend with database integration.</p>
                 </div>
             </div>
-            
-            <!-- NovaHost Section (Right/Bottom on mobile) -->
-            <div class="hosting-section">
-                <h2>NovaHost Plans</h2>
-                <div class="plans-tabs">
-                    <button class="tab-btn active" onclick="switchTab('ryzen')">Ryzen Plans</button>
-                    <button class="tab-btn" onclick="switchTab('intel')">Intel Plans</button>
-                </div>
-                
-                <div id="ryzen" class="tab-content active">
-                    <div class="plans-grid">
-                        <div class="plan-card">
-                            <div class="plan-name">Dirt</div>
-                            <div class="plan-price">₹300</div>
-                            <ul class="plan-specs">
-                                <li>2GB RAM</li>
-                                <li>10GB SSD</li>
-                                <li>2 Core Ryzen 9</li>
-                                <li>Unlimited Slots</li>
-                            </ul>
-                            <a href="https://discord.gg/j8HTzDHuNK" class="cta-btn" target="_blank">Buy Now</a>
-                        </div>
-                        <div class="plan-card featured">
-                            <div class="plan-name">Wood</div>
-                            <div class="plan-price">₹500</div>
-                            <ul class="plan-specs">
-                                <li>4GB RAM</li>
-                                <li>20GB SSD</li>
-                                <li>3 Core Ryzen 9</li>
-                                <li>DDOS Protection</li>
-                            </ul>
-                            <a href="https://discord.gg/j8HTzDHuNK" class="cta-btn" target="_blank">Buy Now</a>
-                        </div>
-                        <div class="plan-card">
-                            <div class="plan-name">Iron</div>
-                            <div class="plan-price">₹800</div>
-                            <ul class="plan-specs">
-                                <li>6GB RAM</li>
-                                <li>30GB SSD</li>
-                                <li>4 Core Ryzen 9</li>
-                                <li>Priority Support</li>
-                            </ul>
-                            <a href="https://discord.gg/j8HTzDHuNK" class="cta-btn" target="_blank">Buy Now</a>
-                        </div>
+        </div>
+    </section>
+
+    <!-- Portfolio -->
+    <section id="portfolio" class="section">
+        <div class="container">
+            <h2 class="section-title">Featured Projects</h2>
+            <div class="portfolio-grid">
+                <div class="portfolio-item">
+                    <img src="https://images.unsplash.com/photo-1461749280684-dccba630e2f6?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Website Project">
+                    <div class="portfolio-content">
+                        <h3>E-Commerce Platform</h3>
+                        <p>Full stack e-commerce solution with payment integration and admin panel.</p>
                     </div>
                 </div>
-                
-                <div id="intel" class="tab-content">
-                    <div class="plans-grid">
-                        <div class="plan-card">
-                            <div class="plan-name">Budget</div>
-                            <div class="plan-price">₹160</div>
-                            <ul class="plan-specs">
-                                <li>8GB RAM</li>
-                                <li>10-20GB SSD</li>
-                                <li>4 Core Intel</li>
-                                <li>Basic Protection</li>
-                            </ul>
-                            <a href="https://discord.gg/j8HTzDHuNK" class="cta-btn" target="_blank">Buy Now</a>
-                        </div>
-                        <div class="plan-card featured">
-                            <div class="plan-name">Wood</div>
-                            <div class="plan-price">₹200</div>
-                            <ul class="plan-specs">
-                                <li>4GB RAM</li>
-                                <li>20GB SSD</li>
-                                <li>4 Core Intel</li>
-                                <li>Full Support</li>
-                            </ul>
-                            <a href="https://discord.gg/j8HTzDHuNK" class="cta-btn" target="_blank">Buy Now</a>
-                        </div>
-                        <div class="plan-card">
-                            <div class="plan-name">Gold</div>
-                            <div class="plan-price">₹450</div>
-                            <ul class="plan-specs">
-                                <li>8GB RAM</li>
-                                <li>40GB SSD</li>
-                                <li>6 Core Intel</li>
-                                <li>Premium Features</li>
-                            </ul>
-                            <a href="https://discord.gg/j8HTzDHuNK" class="cta-btn" target="_blank">Buy Now</a>
-                        </div>
+                <div class="portfolio-item">
+                    <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Minecraft Server">
+                    <div class="portfolio-content">
+                        <h3>Custom MC Server</h3>
+                        <p>1.20+ survival server with custom plugins and economy system.</p>
+                    </div>
+                </div>
+                <div class="portfolio-item">
+                    <img src="https://images.unsplash.com/photo-1618221195710-dd6b41e036fd?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Discord Bot">
+                    <div class="portfolio-content">
+                        <h3>Advanced Discord Bot</h3>
+                        <p>Music bot with 24/7 hosting, moderation, and ticketing system.</p>
                     </div>
                 </div>
             </div>
         </div>
-        
-        <section class="terms">
-            <h3>Terms & Conditions</h3>
-            <ul>
-                <li>Monthly billing via UPI/Discord</li>
-                <li>Instant setup after payment</li>
-                <li>99.9% uptime guarantee</li>
-                <li>Free migrations</li>
-                <li>DM <a href="https://discord.gg/j8HTzDHuNK" class="discord-link" target="_blank">@ogslothhh12</a> for custom plans</li>
-                <li>Refund within 24hrs if unsatisfied</li>
-            </ul>
-            <a href="https://discord.gg/j8HTzDHuNK" class="cta-btn" style="margin-top: 30px;" target="_blank">Join Discord</a>
-        </section>
-    </div>
-    
+    </section>
+
+    <!-- Contact -->
+    <section id="contact" class="contact section">
+        <div class="container">
+            <div class="contact-content">
+                <div class="contact-info">
+                    <h2>Let's Work Together</h2>
+                    <h3>Ready for your project?</h3>
+                    <p>DM me on Discord: <strong>@ogslothhh12</strong></p>
+                    <p>Fast response, quality work, fair prices.</p>
+                </div>
+                <form class="contact-form" onsubmit="alert('Thanks! I\'ll respond on Discord.'); return false;">
+                    <div class="form-group">
+                        <input type="text" placeholder="Your Name" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" placeholder="Your Email" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" placeholder="Project Details" required>
+                    </div>
+                    <div class="form-group">
+                        <textarea placeholder="Tell me about your project..."></textarea>
+                    </div>
+                    <button type="submit" class="btn">Send Message</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-links">
+                <a href="index.html#home">Home</a>
+                <a href="index.html#services">Services</a>
+                <a href="index.html#portfolio">Portfolio</a>
+                <a href="terms.html">Terms & Conditions</a>
+                <a href="privacy.html">Privacy Policy</a>
+            </div>
+            <p>&copy; 2026 OG Sloth. All rights reserved. | Discord: @ogslothhh12</p>
+        </div>
+    </footer>
+
     <script>
-        // Particle system (no lag)
-        function createParticles() {
-            const particles = document.getElementById('particles');
-            for (let i = 0; i < 50; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'particle';
-                particle.style.left = Math.random() * 100 + '%';
-                particle.style.animationDelay = Math.random() * 15 + 's';
-                particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
-                particles.appendChild(particle);
-            }
-        }
-        createParticles();
-        
-        // Tab switching
-        function switchTab(tabName) {
-            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-            document.getElementById(tabName).classList.add('active');
-            event.target.classList.add('active');
-        }
-        
-        // Smooth scroll & animations
-        window.addEventListener('scroll', () => {
-            document.querySelectorAll('.vouch, .plan-card').forEach((el, i) => {
-                const rect = el.getBoundingClientRect();
-                if (rect.top < window.innerHeight) el.style.animationPlayState = 'running';
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
             });
+        });
+
+        // Navbar scroll effect
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 100) {
+                nav.style.background = 'rgba(102, 126, 234, 0.95)';
+                nav.style.backdropFilter = 'blur(10px)';
+            } else {
+                nav.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+                nav.style.backdropFilter = 'none';
+            }
         });
     </script>
 </body>
