@@ -1,0 +1,2407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LIT DRIP | Wear The Future</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.iconify.design/3/3.1.0/iconify.min.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        heading: ['Space Grotesk', 'sans-serif'],
+                        body: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        dark: {
+                            900: '#0a0a0a',
+                            800: '#111111',
+                            700: '#1a1a1a',
+                            600: '#222222',
+                            500: '#333333',
+                        },
+                        accent: {
+                            orange: '#FF6B35',
+                            red: '#FF2E63',
+                            purple: '#8B5CF6',
+                            glow: '#FF6B35',
+                        }
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'glow-pulse': 'glow-pulse 2s ease-in-out infinite alternate',
+                        'slide-up': 'slide-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                        'fade-in': 'fade-in 1s ease-out forwards',
+                        'marquee': 'marquee 20s linear infinite',
+                        'countdown': 'countdown 1s infinite',
+                    },
+                    keyframes: {
+                        'float': {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
+                        'glow-pulse': {
+                            '0%': { boxShadow: '0 0 5px rgba(255, 107, 53, 0.2)' },
+                            '100%': { boxShadow: '0 0 20px rgba(255, 107, 53, 0.6)' },
+                        },
+                        'slide-up': {
+                            '0%': { opacity: '0', transform: 'translateY(30px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                        'fade-in': {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        },
+                        'marquee': {
+                            '0%': { transform: 'translateX(0)' },
+                            '100%': { transform: 'translateX(-50%)' },
+                        },
+                        'countdown': {
+                            '0%, 100%': { opacity: '1' },
+                            '50%': { opacity: '0.7' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0a0a0a;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #111111;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #333333;
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555555;
+        }
+        
+        /* Glassmorphism */
+        .glass {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .glass-dark {
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        /* Glow Effects */
+        .glow-orange {
+            box-shadow: 0 0 20px rgba(255, 107, 53, 0.3), 0 0 40px rgba(255, 107, 53, 0.1);
+        }
+        
+        .glow-text {
+            text-shadow: 0 0 20px rgba(255, 107, 53, 0.5);
+        }
+        
+        /* Magnetic Button */
+        .magnetic-btn {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .magnetic-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+        
+        .magnetic-btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+        
+        /* Page Transitions */
+        .page {
+            display: none;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+        
+        .page.active {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Loading Screen */
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #0a0a0a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+        
+        .loading-screen.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+        
+        .loading-bar {
+            width: 200px;
+            height: 2px;
+            background: #333333;
+            border-radius: 1px;
+            overflow: hidden;
+        }
+        
+        .loading-progress {
+            height: 100%;
+            background: linear-gradient(to right, #FF6B35, #FF2E63, #8B5CF6);
+            width: 0;
+            animation: loading 1.5s ease-out forwards;
+        }
+        
+        @keyframes loading {
+            0% { width: 0; }
+            100% { width: 100%; }
+        }
+        
+        /* Product Card Hover */
+        .product-card {
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        .product-card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .product-card:hover .product-image {
+            transform: scale(1.05);
+        }
+        
+        .product-card .product-image {
+            transition: transform 0.5s ease;
+        }
+        
+        /* Quick View Overlay */
+        .quick-view-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .quick-view-overlay.active {
+            display: flex;
+            opacity: 1;
+        }
+        
+        /* Cart Drawer */
+        .cart-drawer {
+            position: fixed;
+            top: 0;
+            right: -400px;
+            width: 400px;
+            height: 100%;
+            background: #111111;
+            z-index: 1001;
+            transition: right 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: -10px 0 30px rgba(0, 0, 0, 0.5);
+        }
+        
+        .cart-drawer.open {
+            right: 0;
+        }
+        
+        .cart-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .cart-overlay.active {
+            display: block;
+            opacity: 1;
+        }
+        
+        /* Admin Dashboard */
+        .admin-login {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #0a0a0a;
+            z-index: 2000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .admin-login.active {
+            display: flex;
+        }
+        
+        .admin-dashboard {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #0a0a0a;
+            z-index: 2000;
+            display: none;
+            overflow-y: auto;
+        }
+        
+        .admin-dashboard.active {
+            display: block;
+        }
+        
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #1a1a1a;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 15px 20px;
+            z-index: 1500;
+            transform: translateX(150%);
+            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .toast.show {
+            transform: translateX(0);
+        }
+        
+        /* Parallax Effect */
+        .parallax-section {
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+        
+        /* Countdown Timer */
+        .countdown-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 80px;
+            height: 80px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+        
+        /* Scroll Reveal */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+        
+        .reveal.revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Mobile Menu */
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            left: -100%;
+            width: 80%;
+            max-width: 300px;
+            height: 100%;
+            background: #111111;
+            z-index: 1002;
+            transition: left 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            padding: 80px 30px 30px;
+        }
+        
+        .mobile-menu.open {
+            left: 0;
+        }
+        
+        .mobile-menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1001;
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .mobile-menu-overlay.active {
+            display: block;
+            opacity: 1;
+        }
+        
+        /* Bento Grid */
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: repeat(2, 200px);
+            gap: 20px;
+        }
+        
+        .bento-item {
+            border-radius: 20px;
+            overflow: hidden;
+            position: relative;
+            cursor: pointer;
+        }
+        
+        .bento-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .bento-item:hover img {
+            transform: scale(1.1);
+        }
+        
+        .bento-item:nth-child(1) {
+            grid-column: span 2;
+            grid-row: span 2;
+        }
+        
+        .bento-item:nth-child(4) {
+            grid-column: span 2;
+        }
+        
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            .bento-grid {
+                grid-template-columns: repeat(2, 1fr);
+                grid-template-rows: repeat(3, 150px);
+            }
+            
+            .bento-item:nth-child(1) {
+                grid-column: span 2;
+                grid-row: span 1;
+            }
+            
+            .bento-item:nth-child(4) {
+                grid-column: span 1;
+            }
+            
+            .cart-drawer {
+                width: 100%;
+                right: -100%;
+            }
+            
+            .countdown-item {
+                width: 60px;
+                height: 60px;
+            }
+        }
+        
+        /* Admin Table */
+        .admin-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .admin-table th,
+        .admin-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .admin-table th {
+            font-weight: 500;
+            color: #9CA3AF;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .admin-table tr:hover {
+            background: rgba(255, 255, 255, 0.02);
+        }
+        
+        /* Admin Sidebar */
+        .admin-sidebar {
+            width: 250px;
+            height: 100%;
+            background: #111111;
+            border-right: 1px solid rgba(255, 255, 255, 0.05);
+            position: fixed;
+            left: 0;
+            top: 0;
+            padding: 20px 0;
+            overflow-y: auto;
+        }
+        
+        .admin-content {
+            margin-left: 250px;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        @media (max-width: 1024px) {
+            .admin-sidebar {
+                width: 60px;
+            }
+            
+            .admin-content {
+                margin-left: 60px;
+            }
+            
+            .admin-sidebar .sidebar-text {
+                display: none;
+            }
+            
+            .admin-sidebar .sidebar-icon {
+                margin: 0 auto;
+            }
+        }
+        
+        /* Product Gallery */
+        .product-gallery {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .product-gallery-main {
+            width: 100%;
+            height: 500px;
+            border-radius: 16px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .product-gallery-main img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .product-gallery-thumbs {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .product-gallery-thumbs img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 8px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: border-color 0.3s ease;
+        }
+        
+        .product-gallery-thumbs img.active,
+        .product-gallery-thumbs img:hover {
+            border-color: #FF6B35;
+        }
+        
+        /* Zoom Effect */
+        .zoom-container {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .zoom-container:hover .zoom-image {
+            transform: scale(1.5);
+        }
+        
+        .zoom-image {
+            transition: transform 0.5s ease;
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="text-center">
+            <h2 class="font-heading text-3xl font-bold mb-6 bg-gradient-to-r from-accent-orange via-accent-red to-accent-purple bg-clip-text text-transparent">LIT DRIP</h2>
+            <div class="loading-bar">
+                <div class="loading-progress"></div>
+            </div>
+            <p class="text-gray-500 text-sm mt-4">Loading the future...</p>
+        </div>
+    </div>
+
+    <!-- Navbar -->
+    <nav class="fixed top-0 left-0 w-full z-50 glass-dark transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo -->
+                <a href="#" class="flex items-center gap-2" onclick="navigateTo('home')">
+                    <h1 class="font-heading text-xl font-bold bg-gradient-to-r from-accent-orange via-accent-red to-accent-purple bg-clip-text text-transparent">LIT DRIP</h1>
+                </a>
+                
+                <!-- Desktop Navigation -->
+                <div class="hidden md:flex items-center gap-8">
+                    <a href="#" class="text-white hover:text-accent-orange transition-colors font-medium" onclick="navigateTo('home')">Home</a>
+                    <a href="#" class="text-gray-400 hover:text-accent-orange transition-colors" onclick="navigateTo('shop')">Shop</a>
+                    <a href="#" class="text-gray-400 hover:text-accent-orange transition-colors" onclick="navigateTo('about')">About</a>
+                    <a href="#" class="text-gray-400 hover:text-accent-orange transition-colors" onclick="navigateTo('contact')">Contact</a>
+                </div>
+                
+                <!-- Right Actions -->
+                <div class="flex items-center gap-4">
+                    <button class="text-gray-400 hover:text-white transition-colors" onclick="toggleSearch()">
+                        <span class="iconify" data-icon="lucide:search" data-width="20"></span>
+                    </button>
+                    <button class="text-gray-400 hover:text-white transition-colors hidden md:block">
+                        <span class="iconify" data-icon="lucide:heart" data-width="20"></span>
+                    </button>
+                    <button class="text-gray-400 hover:text-white transition-colors relative" onclick="toggleCart()">
+                        <span class="iconify" data-icon="lucide:shopping-bag" data-width="20"></span>
+                        <span class="absolute -top-1 -right-1 w-4 h-4 bg-accent-orange rounded-full text-[10px] font-bold flex items-center justify-center" id="cartCount">0</span>
+                    </button>
+                    <button class="text-gray-400 hover:text-white transition-colors md:hidden" onclick="toggleMobileMenu()">
+                        <span class="iconify" data-icon="lucide:menu" data-width="20"></span>
+                    </button>
+                    <button class="text-gray-400 hover:text-white transition-colors hidden md:block" onclick="showAdminLogin()">
+                        <span class="iconify" data-icon="lucide:settings" data-width="20"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Search Bar -->
+        <div class="hidden" id="searchBar">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-4">
+                <div class="relative">
+                    <input type="text" placeholder="Search products..." class="w-full bg-dark-700 text-white rounded-lg py-3 px-4 pr-10 focus:outline-none focus:ring-2 focus:ring-accent-orange/50" id="searchInput" oninput="handleSearch(this.value)">
+                    <span class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500">
+                        <span class="iconify" data-icon="lucide:search" data-width="18"></span>
+                    </span>
+                </div>
+                <div class="mt-2 hidden" id="searchResults">
+                    <!-- Search results will be injected here -->
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu-overlay" id="mobileMenuOverlay" onclick="toggleMobileMenu()"></div>
+    <div class="mobile-menu" id="mobileMenu">
+        <div class="flex flex-col gap-6">
+            <a href="#" class="text-white text-lg font-medium" onclick="navigateTo('home'); toggleMobileMenu();">Home</a>
+            <a href="#" class="text-gray-400 text-lg" onclick="navigateTo('shop'); toggleMobileMenu();">Shop</a>
+            <a href="#" class="text-gray-400 text-lg" onclick="navigateTo('about'); toggleMobileMenu();">About</a>
+            <a href="#" class="text-gray-400 text-lg" onclick="navigateTo('contact'); toggleMobileMenu();">Contact</a>
+            <hr class="border-gray-800 my-2">
+            <a href="#" class="text-gray-400 text-lg" onclick="showAdminLogin(); toggleMobileMenu();">Admin</a>
+        </div>
+    </div>
+
+    <!-- Cart Overlay -->
+    <div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
+    
+    <!-- Cart Drawer -->
+    <div class="cart-drawer" id="cartDrawer">
+        <div class="flex flex-col h-full">
+            <!-- Cart Header -->
+            <div class="flex items-center justify-between p-5 border-b border-gray-800">
+                <h3 class="font-heading text-lg font-semibold">Your Cart</h3>
+                <button class="text-gray-400 hover:text-white transition-colors" onclick="toggleCart()">
+                    <span class="iconify" data-icon="lucide:x" data-width="20"></span>
+                </button>
+            </div>
+            
+            <!-- Cart Items -->
+            <div class="flex-1 overflow-y-auto p-5" id="cartItems">
+                <!-- Cart items will be injected here -->
+                <div class="flex flex-col items-center justify-center h-full text-center" id="emptyCart">
+                    <span class="iconify text-gray-600 mb-4" data-icon="lucide:shopping-bag" data-width="48"></span>
+                    <p class="text-gray-500">Your cart is empty</p>
+                    <button class="mt-4 text-accent-orange hover:underline" onclick="navigateTo('shop'); toggleCart();">Continue Shopping</button>
+                </div>
+            </div>
+            
+            <!-- Cart Footer -->
+            <div class="p-5 border-t border-gray-800" id="cartFooter" style="display: none;">
+                <div class="flex justify-between mb-2">
+                    <span class="text-gray-400">Subtotal</span>
+                    <span class="font-medium" id="cartSubtotal">$0.00</span>
+                </div>
+                <div class="flex justify-between mb-4">
+                    <span class="text-gray-400">Shipping</span>
+                    <span class="text-gray-400">Calculated at checkout</span>
+                </div>
+                <div class="mb-4">
+                    <div class="flex gap-2">
+                        <input type="text" placeholder="Coupon code" class="flex-1 bg-dark-700 text-white rounded-lg py-2 px-3 text-sm focus:outline-none focus:ring-2 focus:ring-accent-orange/50" id="couponInput">
+                        <button class="bg-dark-600 text-white rounded-lg px-4 py-2 text-sm hover:bg-dark-500 transition-colors" onclick="applyCoupon()">Apply</button>
+                    </div>
+                    <p class="text-xs text-gray-500 mt-1 hidden" id="couponMessage"></p>
+                </div>
+                <button class="w-full bg-gradient-to-r from-accent-orange to-accent-red text-white font-medium py-3 rounded-lg hover:opacity-90 transition-opacity magnetic-btn" onclick="navigateTo('checkout'); toggleCart();">
+                    Checkout
+                </button>
+                <button class="w-full mt-2 text-gray-400 text-sm hover:text-white transition-colors" onclick="navigateTo('shop'); toggleCart();">
+                    Continue Shopping
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick View Overlay -->
+    <div class="quick-view-overlay" id="quickViewOverlay" onclick="closeQuickView(event)">
+        <div class="bg-dark-800 rounded-2xl max-w-4xl w-full mx-4 max-h-[90vh] overflow-y-auto" onclick="event.stopPropagation()">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="font-heading text-xl font-semibold">Quick View</h3>
+                    <button class="text-gray-400 hover:text-white transition-colors" onclick="closeQuickView()">
+                        <span class="iconify" data-icon="lucide:x" data-width="20"></span>
+                    </button>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="rounded-xl overflow-hidden">
+                        <img src="https://picsum.photos/seed/quickview/600/600.jpg" alt="Product" class="w-full h-full object-cover">
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="bg-accent-orange/20 text-accent-orange text-xs font-medium px-2 py-1 rounded-full">New Arrival</span>
+                            <span class="bg-red-500/20 text-red-400 text-xs font-medium px-2 py-1 rounded-full">Hot Drop</span>
+                        </div>
+                        <h2 class="font-heading text-2xl font-bold mb-2">LIT DRIP Essential Tee</h2>
+                        <div class="flex items-center gap-2 mb-4">
+                            <div class="flex text-yellow-400">
+                                <span class="iconify" data-icon="lucide:star" data-width="16"></span>
+                                <span class="iconify" data-icon="lucide:star" data-width="16"></span>
+                                <span class="iconify" data-icon="lucide:star" data-width="16"></span>
+                                <span class="iconify" data-icon="lucide:star" data-width="16"></span>
+                                <span class="iconify" data-icon="lucide:star" data-width="16"></span>
+                            </div>
+                            <span class="text-gray-400 text-sm">(47 reviews)</span>
+                        </div>
+                        <p class="text-3xl font-bold mb-6">$59.99</p>
+                        <div class="mb-6">
+                            <p class="text-gray-400 text-sm mb-2">Size</p>
+                            <div class="flex gap-2">
+                                <button class="w-10 h-10 rounded-lg bg-dark-700 text-white flex items-center justify-center hover:bg-dark-600 transition-colors">S</button>
+                                <button class="w-10 h-10 rounded-lg bg-accent-orange text-white flex items-center justify-center">M</button>
+                                <button class="w-10 h-10 rounded-lg bg-dark-700 text-white flex items-center justify-center hover:bg-dark-600 transition-colors">L</button>
+                                <button class="w-10 h-10 rounded-lg bg-dark-700 text-white flex items-center justify-center hover:bg-dark-600 transition-colors">XL</button>
+                                <button class="w-10 h-10 rounded-lg bg-dark-700 text-white flex items-center justify-center hover:bg-dark-600 transition-colors">XXL</button>
+                            </div>
+                        </div>
+                        <div class="flex gap-3">
+                            <button class="flex-1 bg-gradient-to-r from-accent-orange to-accent-red text-white font-medium py-3 rounded-lg hover:opacity-90 transition-opacity magnetic-btn" onclick="addToCartFromQuickView()">
+                                Add to Cart
+                            </button>
+                            <button class="w-12 h-12 rounded-lg bg-dark-700 text-white flex items-center justify-center hover:bg-dark-600 transition-colors">
+                                <span class="iconify" data-icon="lucide:heart" data-width="20"></span>
+                            </button>
+                        </div>
+                        <div class="mt-6 grid grid-cols-3 gap-3">
+                            <div class="text-center p-3 bg-dark-700 rounded-lg">
+                                <span class="iconify text-accent-orange mx-auto mb-1" data-icon="lucide:truck" data-width="20"></span>
+                                <p class="text-xs text-gray-400">Free Shipping</p>
+                            </div>
+                            <div class="text-center p-3 bg-dark-700 rounded-lg">
+                                <span class="iconify text-accent-orange mx-auto mb-1" data-icon="lucide:refresh-cw" data-width="20"></span>
+                                <p class="text-xs text-gray-400">30-Day Returns</p>
+                            </div>
+                            <div class="text-center p-3 bg-dark-700 rounded-lg">
+                                <span class="iconify text-accent-orange mx-auto mb-1" data-icon="lucide:shield-check" data-width="20"></span>
+                                <p class="text-xs text-gray-400">Secure Payment</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">
+        <span class="iconify text-accent-orange" data-icon="lucide:check-circle" data-width="20"></span>
+        <span id="toastMessage">Item added to cart</span>
+    </div>
+
+    <!-- Homepage -->
+    <div class="page active" id="homePage">
+        <!-- Hero Section -->
+        <section class="relative min-h-screen flex items-center justify-center overflow-hidden">
+            <!-- Background Image -->
+            <div class="absolute inset-0 z-0">
+                <img src="https://picsum.photos/seed/hero-fashion/1920/1080.jpg" alt="Hero Background" class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-gradient-to-b from-dark-900/80 via-dark-900/60 to-dark-900"></div>
+            </div>
+            
+            <!-- Glow Effect -->
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-accent-orange/10 rounded-full blur-[150px]"></div>
+            
+            <!-- Content -->
+            <div class="relative z-10 text-center max-w-4xl mx-auto px-4">
+                <div class="inline-flex items-center gap-2 bg-white/5 border border-white/10 rounded-full px-4 py-2 mb-8 animate-fade-in">
+                    <span class="w-2 h-2 bg-accent-orange rounded-full animate-pulse"></span>
+                    <span class="text-sm text-gray-300">New Collection 2024</span>
+                </div>
+                
+                <h1 class="font-heading text-5xl md:text-7xl lg:text-8xl font-bold mb-6 leading-tight animate-slide-up">
+                    Wear The Future.
+                </h1>
+                
+                <p class="text-gray-400 text-lg md:text-xl max-w-2xl mx-auto mb-10 animate-slide-up" style="animation-delay: 0.2s;">
+                    Premium streetwear for the next generation. Bold designs, limited drops, exclusive style.
+                </p>
+                
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-4 animate-slide-up" style="animation-delay: 0.4s;">
+                    <button class="bg-gradient-to-r from-accent-orange to-accent-red text-white font-medium px-8 py-4 rounded-lg hover:opacity-90 transition-opacity magnetic-btn flex items-center gap-2" onclick="navigateTo('shop')">
+                        Shop Now
+                        <span class="iconify" data-icon="lucide:arrow-right" data-width="18"></span>
+                    </button>
+                    <button class="bg-white/5 border border-white/10 text-white font-medium px-8 py-4 rounded-lg hover:bg-white/10 transition-colors flex items-center gap-2" onclick="navigateTo('shop')">
+                        New Drop
+                        <span class="iconify" data-icon="lucide:zap" data-width="18"></span>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Scroll Indicator -->
+            <div class="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
+                <span class="iconify text-gray-500" data-icon="lucide:chevron-down" data-width="24"></span>
+            </div>
+        </section>
+
+        <!-- Limited Edition Countdown -->
+        <section class="py-16 relative overflow-hidden">
+            <div class="absolute inset-0 bg-gradient-to-r from-accent-orange/5 via-transparent to-accent-purple/5"></div>
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                <div class="glass rounded-2xl p-8 md:p-12 text-center reveal">
+                    <div class="inline-flex items-center gap-2 bg-accent-orange/10 border border-accent-orange/20 rounded-full px-4 py-2 mb-6">
+                        <span class="iconify text-accent-orange" data-icon="lucide:flame" data-width="16"></span>
+                        <span class="text-sm text-accent-orange font-medium">Limited Edition Drop</span>
+                    </div>
+                    <h2 class="font-heading text-3xl md:text-4xl font-bold mb-4">CYBER PUNK COLLECTION</h2>
+                    <p class="text-gray-400 mb-8 max-w-2xl mx-auto">Exclusive limited run. Once they're gone, they're gone forever. Don't miss your chance to own a piece of the future.</p>
+                    
+                    <div class="flex justify-center gap-4 mb-8" id="countdown">
+                        <div class="countdown-item">
+                            <span class="font-heading text-2xl font-bold" id="days">00</span>
+                            <span class="text-xs text-gray-500">Days</span>
+                        </div>
+                        <div class="countdown-item">
+                            <span class="font-heading text-2xl font-bold" id="hours">00</span>
+                            <span class="text-xs text-gray-500">Hours</span>
+                        </div>
+                        <div class="countdown-item">
+                            <span class="font-heading text-2xl font-bold" id="minutes">00</span>
+                            <span class="text-xs text-gray-500">Minutes</span>
+                        </div>
+                        <div class="countdown-item">
+                            <span class="font-heading text-2xl font-bold animate-countdown" id="seconds">00</span>
+                            <span class="text-xs text-gray-500">Seconds</span>
+                        </div>
+                    </div>
+                    
+                    <button class="bg-gradient-to-r from-accent-orange to-accent-red text-white font-medium px-8 py-3 rounded-lg hover:opacity-90 transition-opacity magnetic-btn" onclick="navigateTo('shop')">
+                        Shop the Drop
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Best Sellers -->
+        <section class="py-20">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex items-center justify-between mb-12 reveal">
+                    <div>
+                        <h2 class="font-heading text-3xl md:text-4xl font-bold mb-2">Best Sellers</h2>
+                        <p class="text-gray-400">Our most popular items loved by the community</p>
+                    </div>
+                    <a href="#" class="text-accent-orange hover:underline hidden md:flex items-center gap-1" onclick="navigateTo('shop')">
+                        View All
+                        <span class="iconify" data-icon="lucide:arrow-right" data-width="16"></span>
+                    </a>
+                </div>
+                
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <!-- Product 1 -->
+                    <div class="product-card group reveal" style="transition-delay: 0.1s;">
+                        <div class="relative rounded-xl overflow-hidden mb-4">
+                            <img src="https://picsum.photos/seed/product1/400/500.jpg" alt="LIT DRIP Essential Tee" class="product-image w-full h-64 object-cover">
+                            <div class="absolute top-3 left-3 flex gap-2">
+                                <span class="bg-accent-orange text-white text-xs font-medium px-2 py-1 rounded-full">Best Seller</span>
+                            </div>
+                            <div class="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100">
+                                <button class="bg-white text-dark-900 font-medium px-4 py-2 rounded-lg transform translate-y-4 group-hover:translate-y-0 transition-transform" onclick="openQuickView()">
+                                    Quick View
+                                </button>
+                            </div>
+                            <button class="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-white hover:bg-white/20 transition-colors">
+                                <span class="iconify" data-icon="lucide:heart" data-width="16"></span>
+                            </button>
+                        </div>
+                        <h3 class="font-heading font-medium mb-1">LIT DRIP Essential Tee</h3>
+                        <div class="flex items-center justify-between">
+                            <span class="text-gray-400">$59.99</span>
+                            <button class="text-accent-orange hover:underline text-sm" onclick="addToCart('LIT DRIP Essential Tee', 59.99, 'product1')">
+                                Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Product 2 -->
+                    <div class="product-card group reveal" style="transition-delay: 0.2s;">
+                        <div class="relative rounded-xl overflow-hidden mb-4">
+                            <img src="https://picsum.photos/seed/product2/400/500.jpg" alt="Cyber Hoodie" class="product-image w-full h-64 object-cover">
+                            <div class="absolute top-3 left-3 flex gap-2">
+                                <span class="bg-red-500 text-white text-xs font-medium px-2 py-1 rounded-full">Hot Drop</span>
+                            </div>
+                            <div class="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100">
+                                <button class="bg-white text-dark-900 font-medium px-4 py-2 rounded-lg transform translate-y-4 group-hover:translate-y-0 transition-transform" onclick="openQuickView()">
+                                    Quick View
+                                </button>
+                            </div>
+                            <button class="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-white hover:bg-white/20 transition-colors">
+                                <span class="iconify" data-icon="lucide:heart" data-width="16"></span>
+                            </button>
+                        </div>
+                        <h3 class="font-heading font-medium mb-1">Cyber Hoodie</h3>
+                        <div class="flex items-center justify-between">
+                            <span class="text-gray-400">$89.99</span>
+                            <button class="text-accent-orange hover:underline text-sm" onclick="addToCart('Cyber Hoodie', 89.99, 'product2')">
+                                Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Product 3 -->
+                    <div class="product-card group reveal" style="transition-delay: 0.3s;">
+                        <div class="relative rounded-xl overflow-hidden mb-4">
+                            <img src="https://picsum.photos/seed/product3/400/500.jpg" alt="Neon Joggers" class="product-image w-full h-64 object-cover">
+                            <div class="absolute top-3 left-3 flex gap-2">
+                                <span class="bg-accent-purple text-white text-xs font-medium px-2 py-1 rounded-full">New Arrival</span>
+                            </div>
+                            <div class="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100">
+                                <button class="bg-white text-dark-900 font-medium px-4 py-2 rounded-lg transform translate-y-4 group-hover:translate-y-0 transition-transform" onclick="openQuickView()">
+                                    Quick View
+                                </button>
+                            </div>
+                            <button class="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-white hover:bg-white/20 transition-colors">
+                                <span class="iconify" data-icon="lucide:heart" data-width="16"></span>
+                            </button>
+                        </div>
+                        <h3 class="font-heading font-medium mb-1">Neon Joggers</h3>
+                        <div class="flex items-center justify-between">
+                            <span class="text-gray-400">$79.99</span>
+                            <button class="text-accent-orange hover:underline text-sm" onclick="addToCart('Neon Joggers', 79.99, 'product3')">
+                                Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Product 4 -->
+                    <div class="product-card group reveal" style="transition-delay: 0.4s;">
+                        <div class="relative rounded-xl overflow-hidden mb-4">
+                            <img src="https://picsum.photos/seed/product4/400/500.jpg" alt="Gamer Cap" class="product-image w-full h-64 object-cover">
+                            <div class="absolute top-3 left-3 flex gap-2">
+                                <span class="bg-yellow-500 text-black text-xs font-medium px-2 py-1 rounded-full">Almost Sold Out</span>
+                            </div>
+                            <div class="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100">
+                                <button class="bg-white text-dark-900 font-medium px-4 py-2 rounded-lg transform translate-y-4 group-hover:translate-y-0 transition-transform" onclick="openQuickView()">
+                                    Quick View
+                                </button>
+                            </div>
+                            <button class="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-white hover:bg-white/20 transition-colors">
+                                <span class="iconify" data-icon="lucide:heart" data-width="16"></span>
+                            </button>
+                        </div>
+                        <h3 class="font-heading font-medium mb-1">Gamer Cap</h3>
+                        <div class="flex items-center justify-between">
+                            <span class="text-gray-400">$39.99</span>
+                            <button class="text-accent-orange hover:underline text-sm" onclick="addToCart('Gamer Cap', 39.99, 'product4')">
+                                Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-8 text-center md:hidden">
+                    <a href="#" class="text-accent-orange hover:underline inline-flex items-center gap-1" onclick="navigateTo('shop')">
+                        View All Products
+                        <span class="iconify" data-icon="lucide:arrow-right" data-width="16"></span>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Trending Collections -->
+        <section class="py-20 bg-dark-800">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12 reveal">
+                    <h2 class="font-heading text-3xl md:text-4xl font-bold mb-2">Trending Collections</h2>
+                    <p class="text-gray-400">Explore our most popular collections</p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- Collection 1 -->
+                    <div class="relative rounded-2xl overflow-hidden h-80 group cursor-pointer reveal" style="transition-delay: 0.1s;" onclick="navigateTo('shop')">
+                        <img src="https://picsum.photos/seed/collection1/600/400.jpg" alt="Streetwear Essentials" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+                        <div class="absolute bottom-0 left-0 right-0 p-6">
+                            <h3 class="font-heading text-xl font-bold mb-1">Streetwear Essentials</h3>
+                            <p class="text-gray-300 text-sm mb-3">Premium basics with a twist</p>
+                            <span class="text-accent-orange text-sm font-medium inline-flex items-center gap-1">
+                                Shop Now
+                                <span class="iconify" data-icon="lucide:arrow-right" data-width="14"></span>
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <!-- Collection 2 -->
+                    <div class="relative rounded-2xl overflow-hidden h-80 group cursor-pointer reveal" style="transition-delay: 0.2s;" onclick="navigateTo('shop')">
+                        <img src="https://picsum.photos/seed/collection2/600/400.jpg" alt="Cyber Punk" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+                        <div class="absolute bottom-0 left-0 right-0 p-6">
+                            <h3 class="font-heading text-xl font-bold mb-1">Cyber Punk</h3>
+                            <p class="text-gray-300 text-sm mb-3">Futuristic street style</p>
+                            <span class="text-accent-orange text-sm font-medium inline-flex items-center gap-1">
+                                Shop Now
+                                <span class="iconify" data-icon="lucide:arrow-right" data-width="14"></span>
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <!-- Collection 3 -->
+                    <div class="relative rounded-2xl overflow-hidden h-80 group cursor-pointer reveal" style="transition-delay: 0.3s;" onclick="navigateTo('shop')">
+                        <img src="https://picsum.photos/seed/collection3/600/400.jpg" alt="Gamer Series" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+                        <div class="absolute bottom-0 left-0 right-0 p-6">
+                            <h3 class="font-heading text-xl font-bold mb-1">Gamer Series</h3>
+                            <p class="text-gray-300 text-sm mb-3">Level up your style</p>
+                            <span class="text-accent-orange text-sm font-medium inline-flex items-center gap-1">
+                                Shop Now
+                                <span class="iconify" data-icon="lucide:arrow-right" data-width="14"></span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Bento Grid Featured Categories -->
+        <section class="py-20">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12 reveal">
+                    <h2 class="font-heading text-3xl md:text-4xl font-bold mb-2">Featured Categories</h2>
+                    <p class="text-gray-400">Find your perfect style</p>
+                </div>
+                
+                <div class="bento-grid reveal">
+                    <!-- Category 1 -->
+                    <div class="bento-item" onclick="navigateTo('shop')">
+                        <img src="https://picsum.photos/seed/bento1/800/800.jpg" alt="T-Shirts">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-6">
+                            <h3 class="font-heading text-2xl font-bold">T-Shirts</h3>
+                        </div>
+                    </div>
+                    
+                    <!-- Category 2 -->
+                    <div class="bento-item" onclick="navigateTo('shop')">
+                        <img src="https://picsum.photos/seed/bento2/400/400.jpg" alt="Hoodies">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-6">
+                            <h3 class="font-heading text-lg font-bold">Hoodies</h3>
+                        </div>
+                    </div>
+                    
+                    <!-- Category 3 -->
+                    <div class="bento-item" onclick="navigateTo('shop')">
+                        <img src="https://picsum.photos/seed/bento3/400/400.jpg" alt="Pants">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-6">
+                            <h3 class="font-heading text-lg font-bold">Pants</h3>
+                        </div>
+                    </div>
+                    
+                    <!-- Category 4 -->
+                    <div class="bento-item" onclick="navigateTo('shop')">
+                        <img src="https://picsum.photos/seed/bento4/800/400.jpg" alt="Accessories">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-6">
+                            <h3 class="font-heading text-lg font-bold">Accessories</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Customer Reviews -->
+        <section class="py-20 bg-dark-800">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12 reveal">
+                    <h2 class="font-heading text-3xl md:text-4xl font-bold mb-2">What Our Community Says</h2>
+                    <p class="text-gray-400">Real reviews from real LIT DRIP fans</p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- Review 1 -->
+                    <div class="glass rounded-2xl p-6 reveal" style="transition-delay: 0.1s;">
+                        <div class="flex text-yellow-400 mb-4">
+                            <span class="iconify" data-icon="lucide:star" data-width="16"></span>
+                            <span class="iconify" data-icon="lucide:star" data-width="16"></span>
+                            <span class="iconify" data-icon="lucide:star" data-width="16"></span>
+                            <span class="iconify" data-icon="lucide:star" data-width="16"></span>
+                            <span class="iconify" data-icon="lucide:star" data-width="16"></span>
+                        </div>
+                        <p class="text-gray-300 mb-6">"The quality is insane for the price. I've been wearing my Cyber Hoodie everywhere and getting so many compliments. Definitely my new favorite brand."</p>
+                        <div class="flex items-center gap-3">
+                            <img src="https://picsum.photos/seed/reviewer1/100/100.jpg" alt="Reviewer" class="w-10 h-10 rounded-full object-cover">
+                            <div>
+                                <p class="font-medium text-sm">Alex M.</p>
+                                <p class="text-gray-500 text-xs">Verified Buyer</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Review 2 -->
+                    <div class="glass rounded-2xl p-6 reveal" style="transition-delay: 0.2s;">
+                        <div class="flex text-yellow-400 mb-4">
+                            <span class="iconify" data-icon="lucide:star" data-width="16"></span>
+                            <span class="iconify" data-icon="lucide:star" data-width="16"></span>
+                            <span class="iconify" data-icon="lucide:star" data-width="16"></span>
+                            <span class="iconify" data-icon="lucide:star" data-width="16"></span>
+                            <span class="iconify" data-icon="lucide:star" data-width="16"></span>
+                        </div>
+                        <p class="text-gray-300 mb-6">"Finally a streetwear brand that actually delivers on quality. The stitching, the fabric, the fit - everything is premium. Already ordered 3 more items."</p>
+                        <div class="flex items-center gap-3">
+                            <img src="https://picsum.photos/seed/reviewer2/100/100.jpg" alt="Reviewer" class="w-10 h-10 rounded-full object-cover">
+                            <div>
+                                <p class="font-medium text-sm">Jordan K.</p>
+                                <p class="text-gray-500 text-xs">Verified Buyer</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Review 3 -->
+                    <div class="glass rounded-2xl p-6 reveal" style="transition-delay: 0.3s;">
+                        <div class="flex text-yellow-400 mb-4">
+                            <span class="iconify" data-icon="lucide:star" data-width="16"></span>
+                            <span class="iconify" data-icon="lucide:star" data-width="16"></span>
+                            <span class="iconify" data-icon="lucide:star" data-width="16"></span>
+                            <span class="iconify" data-icon="lucide:star" data-width="16"></span>
+                            <span class="iconify" data-icon="lucide:star" data-width="16"></span>
+                        </div>
+                        <p class="text-gray-300 mb-6">"The Gamer Cap is fire! Perfect fit and the design is so unique. LIT DRIP really understands the culture. Can't wait for the next drop!"</p>
+                        <div class="flex items-center gap-3">
+                            <img src="https://picsum.photos/seed/reviewer3/100/100.jpg" alt="Reviewer" class="w-10 h-10 rounded-full object-cover">
+                            <div>
+                                <p class="font-medium text-sm">Sam T.</p>
+                                <p class="text-gray-500 text-xs">Verified Buyer</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Creator / Influencer Showcase -->
+        <section class="py-20">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12 reveal">
+                    <h2 class="font-heading text-3xl md:text-4xl font-bold mb-2">Worn By Creators</h2>
+                    <p class="text-gray-400">Our community of style innovators</p>
+                </div>
+                
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                    <!-- Creator 1 -->
+                    <div class="text-center reveal" style="transition-delay: 0.1s;">
+                        <div class="relative rounded-2xl overflow-hidden mb-4 group">
+                            <img src="https://picsum.photos/seed/creator1/400/500.jpg" alt="Creator" class="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110">
+                            <div class="absolute inset-0 bg-black/0 group-hover:bg-black/50 transition-colors flex items-center justify-center">
+                                <a href="#" class="bg-white text-dark-900 font-medium px-4 py-2 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity">
+                                    Follow
+                                </a>
+                            </div>
+                        </div>
+                        <h3 class="font-heading font-medium">@neon_streets</h3>
+                        <p class="text-gray-500 text-sm">125K followers</p>
+                    </div>
+                    
+                    <!-- Creator 2 -->
+                    <div class="text-center reveal" style="transition-delay: 0.2s;">
+                        <div class="relative rounded-2xl overflow-hidden mb-4 group">
+                            <img src="https://picsum.photos/seed/creator2/400/500.jpg" alt="Creator" class="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110">
+                            <div class="absolute inset-0 bg-black/0 group-hover:bg-black/50 transition-colors flex items-center justify-center">
+                                <a href="#" class="bg-white text-dark-900 font-medium px-4 py-2 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity">
+                                    Follow
+                                </a>
+                            </div>
+                        </div>
+                        <h3 class="font-heading font-medium">@cyber_vibes</h3>
+                        <p class="text-gray-500 text-sm">98K followers</p>
+                    </div>
+                    
+                    <!-- Creator 3 -->
+                    <div class="text-center reveal" style="transition-delay: 0.3s;">
+                        <div class="relative rounded-2xl overflow-hidden mb-4 group">
+                            <img src="https://picsum.photos/seed/creator3/400/500.jpg" alt="Creator" class="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110">
+                            <div class="absolute inset-0 bg-black/0 group-hover:bg-black/50 transition-colors flex items-center justify-center">
+                                <a href="#" class="bg-white text-dark-900 font-medium px-4 py-2 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity">
+                                    Follow
+                                </a>
+                            </div>
+                        </div>
+                        <h3 class="font-heading font-medium">@gamer_aesthetic</h3>
+                        <p class="text-gray-500 text-sm">210K followers</p>
+                    </div>
+                    
+                    <!-- Creator 4 -->
+                    <div class="text-center reveal" style="transition-delay: 0.4s;">
+                        <div class="relative rounded-2xl overflow-hidden mb-4 group">
+                            <img src="https://picsum.photos/seed/creator4/400/500.jpg" alt="Creator" class="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110">
+                            <div class="absolute inset-0 bg-black/0 group-hover:bg-black/50 transition-colors flex items-center justify-center">
+                                <a href="#" class="bg-white text-dark-900 font-medium px-4 py-2 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity">
+                                    Follow
+                                </a>
+                            </div>
+                        </div>
+                        <h3 class="font-heading font-medium">@drip_lord</h3>
+                        <p class="text-gray-500 text-sm">175K followers</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Brand Marquee -->
+        <section class="py-10 overflow-hidden">
+            <div class="flex animate-marquee whitespace-nowrap">
+                <div class="flex items-center gap-12 mx-6">
+                    <span class="font-heading text-2xl font-bold text-gray-700">LIT DRIP</span>
+                    <span class="text-accent-orange">✦</span>
+                    <span class="font-heading text-2xl font-bold text-gray-700">STREETWEAR</span>
+                    <span class="text-accent-orange">✦</span>
+                    <span class="font-heading text-2xl font-bold text-gray-700">WEAR THE FUTURE</span>
+                    <span class="text-accent-orange">✦</span>
+                    <span class="font-heading text-2xl font-bold text-gray-700">PREMIUM QUALITY</span>
+                    <span class="text-accent-orange">✦</span>
+                    <span class="font-heading text-2xl font-bold text-gray-700">LIMITED DROPS</span>
+                    <span class="text-accent-orange">✦</span>
+                    <span class="font-heading text-2xl font-bold text-gray-700">YOUTH CULTURE</span>
+                    <span class="text-accent-orange">✦</span>
+                </div>
+                <div class="flex items-center gap-12 mx-6">
+                    <span class="font-heading text-2xl font-bold text-gray-700">LIT DRIP</span>
+                    <span class="text-accent-orange">✦</span>
+                    <span class="font-heading text-2xl font-bold text-gray-700">STREETWEAR</span>
+                    <span class="text-accent-orange">✦</span>
+                    <span class="font-heading text-2xl font-bold text-gray-700">WEAR THE FUTURE</span>
+                    <span class="text-accent-orange">✦</span>
+                    <span class="font-heading text-2xl font-bold text-gray-700">PREMIUM QUALITY</span>
+                    <span class="text-accent-orange">✦</span>
+                    <span class="font-heading text-2xl font-bold text-gray-700">LIMITED DROPS</span>
+                    <span class="text-accent-orange">✦</span>
+                    <span class="font-heading text-2xl font-bold text-gray-700">YOUTH CULTURE</span>
+                    <span class="text-accent-orange">✦</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Newsletter Signup -->
+        <section class="py-20">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="relative rounded-3xl overflow-hidden reveal">
+                    <img src="https://picsum.photos/seed/newsletter/1400/500.jpg" alt="Newsletter Background" class="absolute inset-0 w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-gradient-to-r from-dark-900/90 to-dark-900/70"></div>
+                    <div class="relative z-10 p-8 md:p-16 max-w-xl">
+                        <h2 class="font-heading text-3xl md:text-4xl font-bold mb-4">Join The Movement</h2>
+                        <p class="text-gray-300 mb-8">Get early access to drops, exclusive discounts, and content from our creator community.</p>
+                        <div class="flex flex-col sm:flex-row gap-3">
+                            <input type="email" placeholder="Enter your email" class="flex-1 bg-white/10 border border-white/20 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-accent-orange/50">
+                            <button class="bg-gradient-to-r from-accent-orange to-accent-red text-white font-medium px-6 py-3 rounded-lg hover:opacity-90 transition-opacity magnetic-btn">
+                                Subscribe
+                            </button>
+                        </div>
+                        <p class="text-gray-500 text-xs mt-3">No spam, unsubscribe anytime. We respect your privacy.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Instagram / TikTok Style Gallery -->
+        <section class="py-20 bg-dark-800">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12 reveal">
+                    <h2 class="font-heading text-3xl md:text-4xl font-bold mb-2">Follow The Hype</h2>
+                    <p class="text-gray-400">@litdrip on Instagram & TikTok</p>
+                </div>
+                
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div class="relative rounded-xl overflow-hidden aspect-square group cursor-pointer reveal" style="transition-delay: 0.1s;">
+                        <img src="https://picsum.photos/seed/insta1/400/400.jpg" alt="Instagram Post" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/50 transition-colors flex items-center justify-center">
+                            <span class="iconify text-white opacity-0 group-hover:opacity-100 transition-opacity" data-icon="lucide:heart" data-width="24"></span>
+                        </div>
+                    </div>
+                    <div class="relative rounded-xl overflow-hidden aspect-square group cursor-pointer reveal" style="transition-delay: 0.2s;">
+                        <img src="https://picsum.photos/seed/insta2/400/400.jpg" alt="Instagram Post" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/50 transition-colors flex items-center justify-center">
+                            <span class="iconify text-white opacity-0 group-hover:opacity-100 transition-opacity" data-icon="lucide:heart" data-width="24"></span>
+                        </div>
+                    </div>
+                    <div class="relative rounded-xl overflow-hidden aspect-square group cursor-pointer reveal" style="transition-delay: 0.3s;">
+                        <img src="https://picsum.photos/seed/insta3/400/400.jpg" alt="Instagram Post" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/50 transition-colors flex items-center justify-center">
+                            <span class="iconify text-white opacity-0 group-hover:opacity-100 transition-opacity" data-icon="lucide:heart" data-width="24"></span>
+                        </div>
+                    </div>
+                    <div class="relative rounded-xl overflow-hidden aspect-square group cursor-pointer reveal" style="transition-delay: 0.4s;">
+                        <img src="https://picsum.photos/seed/insta4/400/400.jpg" alt="Instagram Post" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/50 transition-colors flex items-center justify-center">
+                            <span class="iconify text-white opacity-0 group-hover:opacity-100 transition-opacity" data-icon="lucide:heart" data-width="24"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Shop Page -->
+    <div class="page" id="shopPage">
+        <section class="pt-24 pb-20">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <!-- Shop Header -->
+                <div class="mb-10">
+                    <h1 class="font-heading text-4xl md:text-5xl font-bold mb-2">Shop</h1>
+                    <p class="text-gray-400">Explore our full collection of premium streetwear</p>
+                </div>
+                
+                <!-- Filters -->
+                <div class="flex flex-col md:flex-row gap-4 mb-10">
+                    <div class="flex-1">
+                        <div class="relative">
+                            <input type="text" placeholder="Search products..." class="w-full bg-dark-700 text-white rounded-lg py-3 px-4 pr-10 focus:outline-none focus:ring-2 focus:ring-accent-orange/50" id="shopSearchInput" oninput="filterProducts()">
+                            <span class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500">
+                                <span class="iconify" data-icon="lucide:search" data-width="18"></span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="flex gap-3 flex-wrap">
+                        <select class="bg-dark-700 text-white rounded-lg py-3 px-4 focus:outline-none focus:ring-2 focus:ring-accent-orange/50" id="categoryFilter" onchange="filterProducts()">
+                            <option value="">All Categories</option>
+                            <option value="tshirts">T-Shirts</option>
+                            <option value="hoodies">Hoodies</option>
+                            <option value="pants">Pants</option>
+                            <option value="accessories">Accessories</option>
+                        </select>
+                        <select class="bg-dark-700 text-white rounded-lg py-3 px-4 focus:outline-none focus:ring-2 focus:ring-accent-orange/50" id="priceFilter" onchange="filterProducts()">
+                            <option value="">All Prices</option>
+                            <option value="0-50">Under $50</option>
+                            <option value="50-100">$50 - $100</option>
+                            <option value="100-150">$100 - $150</option>
+                            <option value="150-99999">Over $150</option>
+                        </select>
+                        <select class="bg-dark-700 text-white rounded-lg py-3 px-4 focus:outline-none focus:ring-2 focus:ring-accent-orange/50" id="sortFilter" onchange="filterProducts()">
+                            <option value="featured">Featured</option>
+                            <option value="price-low">Price: Low to High</option>
+                            <option value="price-high">Price: High to Low</option>
+                            <option value="newest">Newest</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <!-- Product Grid -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6" id="productGrid">
+                    <!-- Products will be injected here by JavaScript -->
+                </div>
+                
+                <!-- No Results -->
+                <div class="hidden text-center py-20" id="noResults">
+                    <span class="iconify text-gray-600 mb-4" data-icon="lucide:search-x" data-width="48"></span>
+                    <h3 class="font-heading text-xl font-medium mb-2">No products found</h3>
+                    <p class="text-gray-500">Try adjusting your search or filter to find what you're looking for.</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Product Detail Page -->
+    <div class="page" id="productPage">
+        <section class="pt-24 pb-20">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <!-- Breadcrumb -->
+                <div class="flex items-center gap-2 text-sm text-gray-500 mb-8">
+                    <a href="#" class="hover:text-accent-orange transition-colors" onclick="navigateTo('home')">Home</a>
+                    <span class="iconify" data-icon="lucide:chevron-right" data-width="14"></span>
+                    <a href="#" class="hover:text-accent-orange transition-colors" onclick="navigateTo('shop')">Shop</a>
+                    <span class="iconify" data-icon="lucide:chevron-right" data-width="14"></span>
+                    <span class="text-white" id="breadcrumbProduct">LIT DRIP Essential Tee</span>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                    <!-- Product Gallery -->
+                    <div class="product-gallery">
+                        <div class="product-gallery-main zoom-container">
+                            <img src="https://picsum.photos/seed/product-detail1/600/600.jpg" alt="Product" class="zoom-image" id="mainProductImage">
+                        </div>
+                        <div class="product-gallery-thumbs">
+                            <img src="https://picsum.photos/seed/product-detail1/200/200.jpg" alt="Product Thumb" class="active" onclick="changeProductImage(this, 'product-detail1')">
+                            <img src="https://picsum.photos/seed/product-detail2/200/200.jpg" alt="Product Thumb" onclick="changeProductImage(this, 'product-detail2')">
+                            <img src="https://picsum.photos/seed/product-detail3/200/200.jpg" alt="Product Thumb" onclick="changeProductImage(this, 'product-detail3')">
+                            <img src="https://picsum.photos/seed/product-detail4/200/200.jpg" alt="Product Thumb" onclick="changeProductImage(this, 'product-detail4')">
+                        </div>
+                    </div>
+                    
+                    <!-- Product Info -->
+                    <div>
+                        <div class="flex items-center gap-2 mb-3">
+                            <span class="bg-accent-orange/20 text-accent-orange text-xs font-medium px-2 py-1 rounded-full">Best Seller</span>
+                            <span class="bg-red-500/20 text-red-400 text-xs font-medium px-2 py-1 rounded-full">Hot Drop</span>
+                        </div>
+                        <h1 class="font-heading text-3xl md:text-4xl font-bold mb-3" id="productTitle">LIT DRIP Essential Tee</h1>
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="flex text-yellow-400">
+                                <span class="iconify" data-icon="lucide:star" data-width="16"></span>
+                                <span class="iconify" data-icon="lucide:star" data-width="16"></span>
+                                <span class="iconify" data-icon="lucide:star" data-width="16"></span>
+                                <span class="iconify" data-icon="lucide:star" data-width="16"></span>
+                                <span class="iconify" data-icon="lucide:star" data-width="16"></span>
+                            </div>
+                            <span class="text-gray-400 text-sm">(47 reviews)</span>
+                        </div>
+                        <p class="text-3xl font-bold mb-6" id="productPrice">$59.99</p>
+                        <p class="text-gray-400 mb-6">Premium quality cotton tee with a modern fit. Features our signature LIT DRIP logo with a subtle glow effect. Perfect for everyday wear or to elevate your streetwear game.</p>
+                        
+                        <!-- Color Selector -->
+                        <div class="mb-6">
+                            <p class="text-gray-400 text-sm mb-2">Color: <span class="text-white">Black</span></p>
+                            <div class="flex gap-2">
+                                <button class="w-8 h-8 rounded-full bg-black border-2 border-accent-orange"></button>
+                                <button class="w-8 h-8 rounded-full bg-white border-2 border-transparent hover:border-gray-400 transition-colors"></button>
+                                <button class="w-8 h-8 rounded-full bg-gray-700 border-2 border-transparent hover:border-gray-400 transition-colors"></button>
+                                <button class="w-8 h-8 rounded-full bg-accent-orange border-2 border-transparent hover:border-gray-400 transition-colors"></button>
+                            </div>
+                        </div>
+                        
+                        <!-- Size Selector -->
+                        <div class="mb-6">
+                            <div class="flex justify-between mb-2">
+                                <p class="text-gray-400 text-sm">Size</p>
+                                <a href="#" class="text-accent-orange text-sm hover:underline">Size Guide</a>
+                            </div>
+                            <div class="flex gap-2">
+                                <button class="w-12 h-12 rounded-lg bg-dark-700 text-white flex items-center justify-center hover:bg-dark-600 transition-colors">S</button>
+                                <button class="w-12 h-12 rounded-lg bg-accent-orange text-white flex items-center justify-center">M</button>
+                                <button class="w-12 h-12 rounded-lg bg-dark-700 text-white flex items-center justify-center hover:bg-dark-600 transition-colors">L</button>
+                                <button class="w-12 h-12 rounded-lg bg-dark-700 text-white flex items-center justify-center hover:bg-dark-600 transition-colors">XL</button>
+                                <button class="w-12 h-12 rounded-lg bg-dark-700 text-white flex items-center justify-center hover:bg-dark-600 transition-colors">XXL</button>
+                            </div>
+                        </div>
+                        
+                        <!-- Quantity -->
+                        <div class="mb-6">
+                            <p class="text-gray-400 text-sm mb-2">Quantity</p>
+                            <div class="flex items-center">
+                                <button class="w-10 h-10 rounded-l-lg bg-dark-700 text-white flex items-center justify-center hover:bg-dark-600 transition-colors" onclick="changeQuantity(-1)">
+                                    <span class="iconify" data-icon="lucide:minus" data-width="16"></span>
+                                </button>
+                                <input type="number" value="1" min="1" class="w-12 h-10 bg-dark-700 text-white text-center border-l border-r border-gray-700 focus:outline-none" id="productQuantity">
+                                <button class="w-10 h-10 rounded-r-lg bg-dark-700 text-white flex items-center justify-center hover:bg-dark-600 transition-colors" onclick="changeQuantity(1)">
+                                    <span class="iconify" data-icon="lucide:plus" data-width="16"></span>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Add to Cart / Buy Now -->
+                        <div class="flex gap-3 mb-6">
+                            <button class="flex-1 bg-gradient-to-r from-accent-orange to-accent-red text-white font-medium py-4 rounded-lg hover:opacity-90 transition-opacity magnetic-btn" onclick="addToCartFromProductPage()">
+                                Add to Cart
+                            </button>
+                            <button class="flex-1 bg-white text-dark-900 font-medium py-4 rounded-lg hover:bg-gray-100 transition-colors">
+                                Buy Now
+                            </button>
+                            <button class="w-14 h-14 rounded-lg bg-dark-700 text-white flex items-center justify-center hover:bg-dark-600 transition-colors">
+                                <span class="iconify" data-icon="lucide:heart" data-width="20"></span>
+                            </button>
+                        </div>
+                        
+                        <!-- Trust Badges -->
+                        <div class="grid grid-cols-3 gap-3 mb-8">
+                            <div class="text-center p-3 bg-dark-700 rounded-lg">
+                                <span class="iconify text-accent-orange mx-auto mb-1" data-icon="lucide:truck" data-width="20"></span>
+                                <p class="text-xs text-gray-400">Free Shipping</p>
+                            </div>
+                            <div class="text-center p-3 bg-dark-700 rounded-lg">
+                                <span class="iconify text-accent-orange mx-auto mb-1" data-icon="lucide:refresh-cw" data-width="20"></span>
+                                <p class="text-xs text-gray-400">30-Day Returns</p>
+                            </div>
+                            <div class="text-center p-3 bg-dark-700 rounded-lg">
+                                <span class="iconify text-accent-orange mx-auto mb-1" data-icon="lucide:shield-check" data-width="20"></span>
+                                <p class="text-xs text-gray-400">Secure Payment</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Shipping Info -->
+                        <div class="border-t border-gray-800 pt-6">
+                            <div class="flex items-start gap-3 mb-4">
+                                <span class="iconify text-gray-500 mt-0.5" data-icon="lucide:package" data-width="18"></span>
+                                <div>
+                                    <p class="font-medium text-sm mb-1">Shipping Information</p>
+                                    <p class="text-gray-500 text-sm">Free standard shipping on orders over $75. Express shipping available at checkout.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <span class="iconify text-gray-500 mt-0.5" data-icon="lucide:clock" data-width="18"></span>
+                                <div>
+                                    <p class="font-medium text-sm mb-1">Delivery Time</p>
+                                    <p class="text-gray-500 text-sm">Standard: 5-7 business days. Express: 2-3 business days.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Product Reviews -->
+                <div class="mt-20">
+                    <h2 class="font-heading text-2xl font-bold mb-8">Customer Reviews</h2>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+                        <div class="glass rounded-xl p-6 text-center">
+                            <p class="font-heading text-5xl font-bold mb-2">4.8</p>
+                            <div class="flex text-yellow-400 justify-center mb-2">
+                                <span class="iconify" data-icon="lucide:star" data-width="16"></span>
+                                <span class="iconify" data-icon="lucide:star" data-width="16"></span>
+                                <span class="iconify" data-icon="lucide:star" data-width="16"></span>
+                                <span class="iconify" data-icon="lucide:star" data-width="16"></span>
+                                <span class="iconify" data-icon="lucide:star" data-width="16"></span>
+                            </div>
+                            <p class="text-gray-400 text-sm">Based on 47 reviews</p>
+                        </div>
+                        
+                        <div class="col-span-2">
+                            <div class="space-y-2">
+                                <div class="flex items-center gap-3">
+                                    <span class="text-sm w-6">5</span>
+                                    <div class="flex-1 h-2 bg-dark-700 rounded-full overflow-hidden">
+                                        <div class="h-full bg-yellow-400 rounded-full" style="width: 80%"></div>
+                                    </div>
+                                    <span class="text-sm text-gray-400 w-8">80%</span>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <span class="text-sm w-6">4</span>
+                                    <div class="flex-1 h-2 bg-dark-700 rounded-full overflow-hidden">
+                                        <div class="h-full bg-yellow-400 rounded-full" style="width: 15%"></div>
+                                    </div>
+                                    <span class="text-sm text-gray-400 w-8">15%</span>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <span class="text-sm w-6">3</span>
+                                    <div class="flex-1 h-2 bg-dark-700 rounded-full overflow-hidden">
+                                        <div class="h-full bg-yellow-400 rounded-full" style="width: 5%"></div>
+                                    </div>
+                                    <span class="text-sm text-gray-400 w-8">5%</span>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <span class="text-sm w-6">2</span>
+                                    <div class="flex-1 h-2 bg-dark-700 rounded-full overflow-hidden">
+                                        <div class="h-full bg-yellow-400 rounded-full" style="width: 0%"></div>
+                                    </div>
+                                    <span class="text-sm text-gray-400 w-8">0%</span>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <span class="text-sm w-6">1</span>
+                                    <div class="flex-1 h-2 bg-dark-700 rounded-full overflow-hidden">
+                                        <div class="h-full bg-yellow-400 rounded-full" style="width: 0%"></div>
+                                    </div>
+                                    <span class="text-sm text-gray-400 w-8">0%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Individual Reviews -->
+                    <div class="space-y-6">
+                        <div class="glass rounded-xl p-6">
+                            <div class="flex items-center justify-between mb-3">
+                                <div class="flex items-center gap-3">
+                                    <img src="https://picsum.photos/seed/review1/100/100.jpg" alt="Reviewer" class="w-10 h-10 rounded-full object-cover">
+                                    <div>
+                                        <p class="font-medium text-sm">Alex M.</p>
+                                        <p class="text-gray-500 text-xs">Verified Buyer</p>
+                                    </div>
+                                </div>
+                                <div class="flex text-yellow-400">
+                                    <span class="iconify" data-icon="lucide:star" data-width="14"></span>
+                                    <span class="iconify" data-icon="lucide:star" data-width="14"></span>
+                                    <span class="iconify" data-icon="lucide:star" data-width="14"></span>
+                                    <span class="iconify" data-icon="lucide:star" data-width="14"></span>
+                                    <span class="iconify" data-icon="lucide:star" data-width="14"></span>
+                                </div>
+                            </div>
+                            <p class="text-gray-300">The quality is insane for the price. I've been wearing my Essential Tee everywhere and getting so many compliments. The fit is perfect and the fabric feels premium. Definitely my new go-to brand.</p>
+                        </div>
+                        
+                        <div class="glass rounded-xl p-6">
+                            <div class="flex items-center justify-between mb-3">
+                                <div class="flex items-center gap-3">
+                                    <img src="https://picsum.photos/seed/review2/100/100.jpg" alt="Reviewer" class="w-10 h-10 rounded-full object-cover">
+                                    <div>
+                                        <p class="font-medium text-sm">Jordan K.</p>
+                                        <p class="text-gray-500 text-xs">Verified Buyer</p>
+                                    </div>
+                                </div>
+                                <div class="flex text-yellow-400">
+                                    <span class="iconify" data-icon="lucide:star" data-width="14"></span>
+                                    <span class="iconify" data-icon="lucide:star" data-width="14"></span>
+                                    <span class="iconify" data-icon="lucide:star" data-width="14"></span>
+                                    <span class="iconify" data-icon="lucide:star" data-width="14"></span>
+                                    <span class="iconify" data-icon="lucide:star" data-width="14"></span>
+                                </div>
+                            </div>
+                            <p class="text-gray-300">Finally a streetwear brand that actually delivers on quality. The stitching, the fabric, the fit - everything is premium. I ordered a size up and it fits perfectly oversized like I wanted. Already ordered 3 more items!</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Related Products -->
+                <div class="mt-20">
+                    <h2 class="font-heading text-2xl font-bold mb-8">You Might Also Like</h2>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                        <div class="product-card group">
+                            <div class="relative rounded-xl overflow-hidden mb-4">
+                                <img src="https://picsum.photos/seed/related1/400/500.jpg" alt="Related Product" class="product-image w-full h-64 object-cover">
+                                <div class="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100">
+                                    <button class="bg-white text-dark-900 font-medium px-4 py-2 rounded-lg transform translate-y-4 group-hover:translate-y-0 transition-transform" onclick="viewProduct('Cyber Hoodie', 89.99)">
+                                        View Product
+                                    </button>
+                                </div>
+                            </div>
+                            <h3 class="font-heading font-medium mb-1">Cyber Hoodie</h3>
+                            <span class="text-gray-400">$89.99</span>
+                        </div>
+                        <div class="product-card group">
+                            <div class="relative rounded-xl overflow-hidden mb-4">
+                                <img src="https://picsum.photos/seed/related2/400/500.jpg" alt="Related Product" class="product-image w-full h-64 object-cover">
+                                <div class="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100">
+                                    <button class="bg-white text-dark-900 font-medium px-4 py-2 rounded-lg transform translate-y-4 group-hover:translate-y-0 transition-transform" onclick="viewProduct('Neon Joggers', 79.99)">
+                                        View Product
+                                    </button>
+                                </div>
+                            </div>
+                            <h3 class="font-heading font-medium mb-1">Neon Joggers</h3>
+                            <span class="text-gray-400">$79.99</span>
+                        </div>
+                        <div class="product-card group">
+                            <div class="relative rounded-xl overflow-hidden mb-4">
+                                <img src="https://picsum.photos/seed/related3/400/500.jpg" alt="Related Product" class="product-image w-full h-64 object-cover">
+                                <div class="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100">
+                                    <button class="bg-white text-dark-900 font-medium px-4 py-2 rounded-lg transform translate-y-4 group-hover:translate-y-0 transition-transform" onclick="viewProduct('Gamer Cap', 39.99)">
+                                        View Product
+                                    </button>
+                                </div>
+                            </div>
+                            <h3 class="font-heading font-medium mb-1">Gamer Cap</h3>
+                            <span class="text-gray-400">$39.99</span>
+                        </div>
+                        <div class="product-card group">
+                            <div class="relative rounded-xl overflow-hidden mb-4">
+                                <img src="https://picsum.photos/seed/related4/400/500.jpg" alt="Related Product" class="product-image w-full h-64 object-cover">
+                                <div class="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100">
+                                    <button class="bg-white text-dark-900 font-medium px-4 py-2 rounded-lg transform translate-y-4 group-hover:translate-y-0 transition-transform" onclick="viewProduct('Tech Jacket', 129.99)">
+                                        View Product
+                                    </button>
+                                </div>
+                            </div>
+                            <h3 class="font-heading font-medium mb-1">Tech Jacket</h3>
+                            <span class="text-gray-400">$129.99</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- About Page -->
+    <div class="page" id="aboutPage">
+        <section class="pt-24 pb-20">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <!-- About Hero -->
+                <div class="text-center mb-20">
+                    <h1 class="font-heading text-4xl md:text-5xl font-bold mb-4">Our Story</h1>
+                    <p class="text-gray-400 text-lg max-w-2xl mx-auto">LIT DRIP isn't just a brand—it's a movement. Born from the streets, powered by culture, designed for the future.</p>
+                </div>
+                
+                <!-- About Image -->
+                <div class="relative rounded-3xl overflow-hidden mb-20 h-80 md:h-96">
+                    <img src="https://picsum.photos/seed/about-hero/1400/600.jpg" alt="About LIT DRIP" class="w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-gradient-to-t from-dark-900/80 to-transparent"></div>
+                    <div class="absolute bottom-0 left-0 right-0 p-8 md:p-12">
+                        <h2 class="font-heading text-3xl md:text-4xl font-bold mb-2">Wear The Future.</h2>
+                        <p class="text-gray-300 max-w-xl">We believe fashion is more than clothes—it's identity, expression, and confidence. LIT DRIP exists to empower the next generation to own their style.</p>
+                    </div>
+                </div>
+                
+                <!-- Mission Values -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
+                    <div class="glass rounded-2xl p-8 text-center">
+                        <div class="w-16 h-16 rounded-full bg-accent-orange/10 flex items-center justify-center mx-auto mb-4">
+                            <span class="iconify text-accent-orange" data-icon="lucide:flame" data-width="24"></span>
+                        </div>
+                        <h3 class="font-heading text-xl font-bold mb-3">Bold Expression</h3>
+                        <p class="text-gray-400">We design for those who refuse to blend in. Our pieces make statements before you even speak.</p>
+                    </div>
+                    <div class="glass rounded-2xl p-8 text-center">
+                        <div class="w-16 h-16 rounded-full bg-accent-purple/10 flex items-center justify-center mx-auto mb-4">
+                            <span class="iconify text-accent-purple" data-icon="lucide:users" data-width="24"></span>
+                        </div>
+                        <h3 class="font-heading text-xl font-bold mb-3">Community First</h3>
+                        <p class="text-gray-400">LIT DRIP is built by and for the culture. Our community shapes everything we create.</p>
+                    </div>
+                    <div class="glass rounded-2xl p-8 text-center">
+                        <div class="w-16 h-16 rounded-full bg-accent-red/10 flex items-center justify-center mx-auto mb-4">
+                            <span class="iconify text-accent-red" data-icon="lucide:sparkles" data-width="24"></span>
+                        </div>
+                        <h3 class="font-heading text-xl font-bold mb-3">Premium Quality</h3>
+                        <p class="text-gray-400">No compromises. Every stitch, fabric, and detail is crafted to meet the highest standards.</p>
+                    </div>
+                </div>
+                
+                <!-- About Content -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center mb-20">
+                    <div>
+                        <h2 class="font-heading text-3xl font-bold mb-6">From The Streets To The Future</h2>
+                        <p class="text-gray-400 mb-4">LIT DRIP started in 2022 with a simple idea: create streetwear that actually feels premium without the luxury price tag. We were tired of overpriced hype brands that didn't deliver on quality.</p>
+                        <p class="text-gray-400 mb-4">What began as a small operation selling out of a garage has grown into a movement of thousands of creators, gamers, and fashion enthusiasts who refuse to settle for basic.</p>
+                        <p class="text-gray-400">Today, LIT DRIP represents more than clothing—it's a mindset. It's about having the confidence to express yourself unapologetically and the style to back it up.</p>
+                    </div>
+                    <div class="rounded-2xl overflow-hidden">
+                        <img src="https://picsum.photos/seed/about-content/600/700.jpg" alt="About Content" class="w-full h-full object-cover">
+                    </div>
+                </div>
+                
+                <!-- Stats -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-20">
+                    <div class="glass rounded-xl p-6 text-center">
+                        <p class="font-heading text-3xl font-bold text-accent-orange mb-2">50K+</p>
+                        <p class="text-gray-400 text-sm">Happy Customers</p>
+                    </div>
+                    <div class="glass rounded-xl p-6 text-center">
+                        <p class="font-heading text-3xl font-bold text-accent-orange mb-2">100+</p>
+                        <p class="text-gray-400 text-sm">Unique Designs</p>
+                    </div>
+                    <div class="glass rounded-xl p-6 text-center">
+                        <p class="font-heading text-3xl font-bold text-accent-orange mb-2">4.8/5</p>
+                        <p class="text-gray-400 text-sm">Average Rating</p>
+                    </div>
+                    <div class="glass rounded-xl p-6 text-center">
+                        <p class="font-heading text-3xl font-bold text-accent-orange mb-2">30+</p>
+                        <p class="text-gray-400 text-sm">Countries Shipped</p>
+                    </div>
+                </div>
+                
+                <!-- Team -->
+                <div class="text-center mb-10">
+                    <h2 class="font-heading text-3xl font-bold mb-2">The Team</h2>
+                    <p class="text-gray-400">Meet the people behind LIT DRIP</p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="text-center">
+                        <div class="w-32 h-32 rounded-full overflow-hidden mx-auto mb-4">
+                            <img src="https://picsum.photos/seed/team1/300/300.jpg" alt="Team Member" class="w-full h-full object-cover">
+                        </div>
+                        <h3 class="font-heading font-bold text-lg">Alex Chen</h3>
+                        <p class="text-accent-orange text-sm mb-2">Founder & Creative Director</p>
+                        <p class="text-gray-400 text-sm">Visionary behind the LIT DRIP aesthetic. Former street artist turned fashion entrepreneur.</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="w-32 h-32 rounded-full overflow-hidden mx-auto mb-4">
+                            <img src="https://picsum.photos/seed/team2/300/300.jpg" alt="Team Member" class="w-full h-full object-cover">
+                        </div>
+                        <h3 class="font-heading font-bold text-lg">Maya Rodriguez</h3>
+                        <p class="text-accent-orange text-sm mb-2">Head of Design</p>
+                        <p class="text-gray-400 text-sm">Brings 10+ years of fashion design experience. Obsessed with details and quality.</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="w-32 h-32 rounded-full overflow-hidden mx-auto mb-4">
+                            <img src="https://picsum.photos/seed/team3/300/300.jpg" alt="Team Member" class="w-full h-full object-cover">
+                        </div>
+                        <h3 class="font-heading font-bold text-lg">Jordan Williams</h3>
+                        <p class="text-accent-orange text-sm mb-2">Community Manager</p>
+                        <p class="text-gray-400 text-sm">Connects with our community daily. Former gaming content creator with a passion for street culture.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Contact Page -->
+    <div class="page" id="contactPage">
+        <section class="pt-24 pb-20">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <!-- Contact Hero -->
+                <div class="text-center mb-16">
+                    <h1 class="font-heading text-4xl md:text-5xl font-bold mb-4">Get In Touch</h1>
+                    <p class="text-gray-400 text-lg max-w-2xl mx-auto">Have a question, collaboration idea, or just want to say what's up? We'd love to hear from you.</p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+                    <div class="glass rounded-xl p-6 text-center">
+                        <div class="w-12 h-12 rounded-full bg-accent-orange/10 flex items-center justify-center mx-auto mb-4">
+                            <span class="iconify text-accent-orange" data-icon="lucide:mail" data-width="20"></span>
+                        </div>
+                        <h3 class="font-heading font-bold mb-2">Email Us</h3>
+                        <p class="text-gray-400 text-sm">support@litdrip.com</p>
+                    </div>
+                    <div class="glass rounded-xl p-6 text-center">
+                        <div class="w-12 h-12 rounded-full bg-accent-purple/10 flex items-center justify-center mx-auto mb-4">
+                            <span class="iconify text-accent-purple" data-icon="lucide:message-circle" data-width="20"></span>
+                        </div>
+                        <h3 class="font-heading font-bold mb-2">Live Chat</h3>
+                        <p class="text-gray-400 text-sm">Mon-Fri, 9AM-6PM EST</p>
+                    </div>
+                    <div class="glass rounded-xl p-6 text-center">
+                        <div class="w-12 h-12 rounded-full bg-accent-red/10 flex items-center justify-center mx-auto mb-4">
+                            <span class="iconify text-accent-red" data-icon="lucide:map-pin" data-width="20"></span>
+                        </div>
+                        <h3 class="font-heading font-bold mb-2">Visit Us</h3>
+                        <p class="text-gray-400 text-sm">Los Angeles, CA</p>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                    <!-- Contact Form -->
+                    <div>
+                        <h2 class="font-heading text-2xl font-bold mb-6">Send Us A Message</h2>
+                        <form onsubmit="handleContactForm(event)">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                                <div>
+                                    <label class="block text-sm text-gray-400 mb-2">First Name</label>
+                                    <input type="text" required class="w-full bg-dark-700 text-white rounded-lg py-3 px-4 focus:outline-none focus:ring-2 focus:ring-accent-orange/50" placeholder="John">
+                                </div>
+                                <div>
+                                    <label class="block text-sm text-gray-400 mb-2">Last Name</label>
+                                    <input type="text" required class="w-full bg-dark-700 text-white rounded-lg py-3 px-4 focus:outline-none focus:ring-2 focus:ring-accent-orange/50" placeholder="Doe">
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <label class="block text-sm text-gray-400 mb-2">Email</label>
+                                <input type="email" required class="w-full bg-dark-700 text-white rounded-lg py-3 px-4 focus:outline-none focus:ring-2 focus:ring-accent-orange/50" placeholder="john@example.com">
+                            </div>
+                            <div class="mb-4">
+                                <label class="block text-sm text-gray-400 mb-2">Subject</label>
+                                <select class="w-full bg-dark-700 text-white rounded-lg py-3 px-4 focus:outline-none focus:ring-2 focus:ring-accent-orange/50">
+                                    <option value="">Select a topic</option>
+                                    <option value="order">Order Inquiry</option>
+                                    <option value="product">Product Question</option>
+                                    <option value="collaboration">Collaboration</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                            <div class="mb-6">
+                                <label class="block text-sm text-gray-400 mb-2">Message</label>
+                                <textarea rows="5" required class="w-full bg-dark-700 text-white rounded-lg py-3 px-4 focus:outline-none focus:ring-2 focus:ring-accent-orange/50 resize-none" placeholder="Tell us what's on your mind..."></textarea>
+                            </div>
+                            <button type="submit" class="bg-gradient-to-r from-accent-orange to-accent-red text-white font-medium px-8 py-3 rounded-lg hover:opacity-90 transition-opacity magnetic-btn">
+                                Send Message
+                            </button>
+                        </form>
+                    </div>
+                    
+                    <!-- Social Links & FAQ -->
+                    <div>
+                        <h2 class="font-heading text-2xl font-bold mb-6">Follow Us</h2>
+                        <div class="grid grid-cols-2 gap-4 mb-10">
+                            <a href="#" class="glass rounded-xl p-4 flex items-center gap-3 hover:bg-white/10 transition-colors">
+                                <span class="iconify text-pink-500" data-icon="lucide:instagram" data-width="24"></span>
+                                <div>
+                                    <p class="font-medium text-sm">Instagram</p>
+                                    <p class="text-gray-500 text-xs">@litdrip</p>
+                                </div>
+                            </a>
+                            <a href="#" class="glass rounded-xl p-4 flex items-center gap-3 hover:bg-white/10 transition-colors">
+                                <span class="iconify" data-icon="lucide:music" data-width="24"></span>
+                                <div>
+                                    <p class="font-medium text-sm">TikTok</p>
+                                    <p class="text-gray-500 text-xs">@litdrip</p>
+                                </div>
+                            </a>
+                            <a href="#" class="glass rounded-xl p-4 flex items-center gap-3 hover:bg-white/10 transition-colors">
+                                <span class="iconify text-indigo-500" data-icon="lucide:message-square" data-width="24"></span>
+                                <div>
+                                    <p class="font-medium text-sm">Discord</p>
+                                    <p class="text-gray-500 text-xs">Join Community</p>
+                                </div>
+                            </a>
+                            <a href="#" class="glass rounded-xl p-4 flex items-center gap-3 hover:bg-white/10 transition-colors">
+                                <span class="iconify text-blue-500" data-icon="lucide:twitter" data-width="24"></span>
+                                <div>
+                                    <p class="font-medium text-sm">Twitter</p>
+                                    <p class="text-gray-500 text-xs">@litdrip</p>
+                                </div>
+                            </a>
+                        </div>
+                        
+                        <h2 class="font-heading text-2xl font-bold mb-6">Frequently Asked Questions</h2>
+                        <div class="space-y-4">
+                            <div class="glass rounded-xl overflow-hidden">
+                                <button class="w-full flex items-center justify-between p-4 text-left" onclick="toggleFaq(this)">
+                                    <span class="font-medium">What is your return policy?</span>
+                                    <span class="iconify text-gray-500 transition-transform" data-icon="lucide:chevron-down" data-width="18"></span>
+                                </button>
+                                <div class="hidden px-4 pb-4">
+                                    <p class="text-gray-400 text-sm">We offer a 30-day return policy for unworn items with tags attached. Simply contact our support team to initiate a return.</p>
+                                </div>
+                            </div>
+                            <div class="glass rounded-xl overflow-hidden">
+                                <button class="w-full flex items-center justify-between p-4 text-left" onclick="toggleFaq(this)">
+                                    <span class="font-medium">How long does shipping take?</span>
+                                    <span class="iconify text-gray-500 transition-transform" data-icon="lucide:chevron-down" data-width="18"></span>
+                                </button>
+                                <div class="hidden px-4 pb-4">
+                                    <p class="text-gray-400 text-sm">Standard shipping takes 5-7 business days. Express shipping is available for 2-3 business day delivery. Free shipping on orders over $75.</p>
+                                </div>
+                            </div>
+                            <div class="glass rounded-xl overflow-hidden">
+                                <button class="w-full flex items-center justify-between p-4 text-left" onclick="toggleFaq(this)">
+                                    <span class="font-medium">Do you ship internationally?</span>
+                                    <span class="iconify text-gray-500 transition-transform" data-icon="lucide:chevron-down" data-width="18"></span>
+                                </button>
+                                <div class="hidden px-4 pb-4">
+                                    <p class="text-gray-400 text-sm">Yes! We ship to over 30 countries worldwide. International shipping times and rates vary by location.</p>
+                                </div>
+                            </div>
+                            <div class="glass rounded-xl overflow-hidden">
+                                <button class="w-full flex items-center justify-between p-4 text-left" onclick="toggleFaq(this)">
+                                    <span class="font-medium">How do I know my size?</span>
+                                    <span class="iconify text-gray-500 transition-transform" data-icon="lucide:chevron-down" data-width="18"></span>
+                                </button>
+                                <div class="hidden px-4 pb-4">
+                                    <p class="text-gray-400 text-sm">Check our size guide on each product page for detailed measurements. If you're between sizes, we recommend sizing up for a more relaxed fit.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Checkout Page -->
+    <div class="page" id="checkoutPage">
+        <section class="pt-24 pb-20">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <h1 class="font-heading text-3xl md:text-4xl font-bold mb-8">Checkout</h1>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <!-- Checkout Form -->
+                    <div class="lg:col-span-2">
+                        <div class="glass rounded-2xl p-6 mb-6">
+                            <h2 class="font-heading text-xl font-bold mb-6">Contact Information</h2>
+                            <div class="mb-4">
+                                <input type="email" class="w-full bg-dark-700 text-white rounded-lg py-3 px-4 focus:outline-none focus:ring-2 focus:ring-accent-orange/50" placeholder="Email address">
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <input type="checkbox" id="newsletter" class="w-4 h-4 bg-dark-700 rounded border-gray-600 text-accent-orange focus:ring-accent-orange/50">
+                                <label for="newsletter" class="text-sm text-gray-400">Email me with news and offers</label>
+                            </div>
+                        </div>
+                        
+                        <div class="glass rounded-2xl p-6 mb-6">
+                            <h2 class="font-heading text-xl font-bold mb-6">Shipping Address</h2>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                                <div>
+                                    <label class="block text-sm text-gray-400 mb-2">First Name</label>
+                                    <input type="text" class="w-full bg-dark-700 text-white rounded-lg py-3 px-4 focus:outline-none focus:ring-2 focus:ring-accent-orange/50" placeholder="John">
+                                </div>
+                                <div>
+                                    <label class="block text-sm text-gray-400 mb-2">Last Name</label>
+                                    <input type="text" class="w-full bg-dark-700 text-white rounded-lg py-3 px-4 focus:outline-none focus:ring-2 focus:ring-accent-orange/50" placeholder="Doe">
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <label class="block text-sm text-gray-400 mb-2">Address</label>
+                                <input type="text" class="w-full bg-dark-700 text-white rounded-lg py-3 px-4 focus:outline-none focus:ring-2 focus:ring-accent-orange/50" placeholder="123 Main St">
+                            </div>
+                            <div class="mb-4">
+                                <label class="block text-sm text-gray-400 mb-2">Apartment, suite, etc. (optional)</label>
+                                <input type="text" class="w-full bg-dark-700 text-white rounded-lg py-3 px-4 focus:outline-none focus:ring-2 focus:ring-accent-orange/50" placeholder="Apt 4B">
+                            </div>
+                            <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                                <div class="col-span-2 sm:col-span-1">
+                                    <label class="block text-sm text-gray-400 mb-2">City</label>
+                                    <input type="text" class="w-full bg-dark-700 text-white rounded-lg py-3 px-4 focus:outline-none focus:ring-2 focus:ring-accent-orange/50" placeholder="Los Angeles">
+                                </div>
+                                <div>
+                                    <label class="block text-sm text-gray-400 mb-2">State</label>
+                                    <select class="w-full bg-dark-700 text-white rounded-lg py-3 px-4 focus:outline-none focus:ring-2 focus:ring-accent-orange/50">
+                                        <option value="">Select</option>
+                                        <option value="CA">California</option>
+                                        <option value="NY">New York</option>
+                                        <option value="TX">Texas</option>
+                                        <option value="FL">Florida</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-sm text-gray-400 mb-2">ZIP Code</label>
+                                    <input type="text" class="w-full bg-dark-700 text-white rounded-lg py-3 px-4 focus:outline-none focus:ring-2 focus:ring-accent-orange/50" placeholder="90001">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="glass rounded-2xl p-6">
+                            <h2 class="font-heading text-xl font-bold mb-6">Payment Method</h2>
+                            <div class="space-y-3 mb-6">
+                                <label class="flex items-center gap-3 p-3 bg-dark-700 rounded-lg cursor-pointer border border-transparent hover:border-gray-600 transition-colors has-[:checked]:border-accent-orange">
+                                    <input type="radio" name="payment" value="credit" checked class="w-4 h-4 text-accent-orange focus:ring-accent-orange/50">
+                                    <span class="iconify text-gray-400" data-icon="lucide:credit-card" data-width="20"></span>
+                                    <span class="text-sm">Credit Card</span>
+                                </label>
+                                <label class="flex items-center gap-3 p-3 bg-dark-700 rounded-lg cursor-pointer border border-transparent hover:border-gray-600 transition-colors has-[:checked]:border-accent-orange">
+                                    <input type="radio" name="payment" value="paypal" class="w-4 h-4 text-accent-orange focus:ring-accent-orange/50">
+                                    <span class="iconify text-blue-400" data-icon="lucide:wallet" data-width="20"></span>
+                                    <span class="text-sm">PayPal</span>
+                                </label>
+                                <label class="flex items-center gap-3 p-3 bg-dark-700 rounded-lg cursor-pointer border border-transparent hover:border-gray-600 transition-colors has-[:checked]:border-accent-orange">
+                                    <input type="radio" name="payment" value="apple" class="w-4 h-4 text-accent-orange focus:ring-accent-orange/50">
+                                    <span class="iconify text-gray-400" data-icon="lucide:smartphone" data-width="20"></span>
+                                    <span class="text-sm">Apple Pay</span>
+                                </label>
+                            </div>
+                            
+                            <div class="grid grid-cols-2 gap-4 mb-4">
+                                <div class="col-span-2">
+                                    <label class="block text-sm text-gray-400 mb-2">Card Number</label>
+                                    <input type="text" class="w-full bg-dark-700 text-white rounded-lg py-3 px-4 focus:outline-none focus:ring-2 focus:ring-accent-orange/50" placeholder="1234 5678 9012 3456">
+                                </div>
+                                <div>
+                                    <label class="block text-sm text-gray-400 mb-2">Expiration Date</label>
+                                    <input type="text" class="w-full bg-dark-700 text-white rounded-lg py-3 px-4 focus:outline-none focus:ring-2 focus:ring-accent-orange/50" placeholder="MM/YY">
+                                </div>
+                                <div>
+                                    <label class="block text-sm text-gray-400 mb-2">Security Code</label>
+                                    <input type="text" class="w-full bg-dark-700 text-white rounded-lg py-3 px-4 focus:outline-none focus:ring-2 focus:ring-accent-orange/50" placeholder="CVC">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Order Summary -->
+                    <div>
+                        <div class="glass rounded-2xl p-6 sticky top-24">
+                            <h2 class="font-heading text-xl font-bold mb-6">Order Summary</h2>
+                            <div class="space-y-4 mb-6" id="checkoutItems">
+                                <!-- Checkout items will be injected here -->
+                            </div>
+                            <div class="border-t border-gray-800 pt-4 mb-4">
+                                <div class="flex justify-between mb-2">
+                                    <span class="text-gray-400">Subtotal</span>
+                                    <span id="checkoutSubtotal">$0.00</span>
+                                </div>
+                                <div class="flex justify-between mb-2">
+                                    <span class="text-gray-400">Shipping</span>
+                                    <span class="text-gray-400">Calculated at checkout</span>
+                                </div>
+                                <div class="flex justify-between mb-2">
+                                    <span class="text-gray-400">Tax</span>
+                                    <span class="text-gray-400">Calculated at checkout</span>
+                                </div>
+                            </div>
+                            <div class="border-t border-gray-800 pt-4 mb-6">
+                                <div class="flex justify-between">
+                                    <span class="font-bold">Total</span>
+                                    <span class="font-bold" id="checkoutTotal">$0.00</span>
+                                </div>
+                            </div>
+                            <button class="w-full bg-gradient-to-r from-accent-orange to-accent-red text-white font-medium py-4 rounded-lg hover:opacity-90 transition-opacity magnetic-btn" onclick="placeOrder()">
+                                Place Order
+                            </button>
+                            <div class="flex items-center justify-center gap-2 mt-4 text-gray-500 text-xs">
+                                <span class="iconify" data-icon="lucide:lock" data-width="12"></span>
+                                <span>Secure checkout powered by Stripe</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Order Confirmation Page -->
+    <div class="page" id="confirmationPage">
+        <section class="pt-24 pb-20 min-h-screen flex items-center justify-center">
+            <div class="max-w-lg mx-auto px-4 text-center">
+                <div class="w-20 h-20 rounded-full bg-green-500/10 flex items-center justify-center mx-auto mb-6">
+                    <span class="iconify text-green-500" data-icon="lucide:check" data-width="40"></span>
+                </div>
+                <h1 class="font-heading text-3xl md:text-4xl font-bold mb-4">Order Confirmed!</h1>
+                <p class="text-gray-400 mb-2">Thank you for your purchase. Your order has been placed successfully.</p>
+                <p class="text-gray-400 mb-8">Order #LD-<span id="orderNumber">123456</span></p>
+                <div class="glass rounded-2xl p-6 mb-8 text-left">
+                    <h3 class="font-heading font-bold mb-4">What's Next?</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-start gap-3">
+                            <span class="iconify text-accent-orange mt-0.5" data-icon="lucide:mail" data-width="18"></span>
+                            <p class="text-gray-400 text-sm">You'll receive an order confirmation email with details of your purchase.</p>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <span class="iconify text-accent-orange mt-0.5" data-icon="lucide:package" data-width="18"></span>
+                            <p class="text-gray-400 text-sm">We'll notify you when your order ships with tracking information.</p>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <span class="iconify text-accent-orange mt-0.5" data-icon="lucide:truck" data-width="18"></span>
+                            <p class="text-gray-400 text-sm">Your order should arrive within 5-7 business days (standard shipping).</p>
+                        </div>
+                    </div>
+                </div>
+                <button class="bg-gradient-to-r from-accent-orange to-accent-red text-white font-medium px-8 py-3 rounded-lg hover:opacity-90 transition-opacity magnetic-btn" onclick="navigateTo('home')">
+                    Continue Shopping
+                </button>
+            </div>
+        </section>
+    </div>
+
+    <!-- Admin Login -->
+    <div class="admin-login" id="adminLogin">
+        <div class="w-full max-w-md mx-4">
+            <div class="glass rounded-2xl p-8">
+                <div class="text-center mb-8">
+                    <h2 class="font-heading text-2xl font-bold mb-2">Admin Login</h2>
+                    <p class="text-gray-400">Sign in with your Google account</p>
+                </div>
+                <button class="w-full bg-white text-dark-900 font-medium py-3 rounded-lg hover:bg-gray-100 transition-colors flex items-center justify-center gap-3 mb-4" onclick="adminGoogleLogin()">
+                    <svg width="18" height="18" viewBox="0 0 24 24">
+                        <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/>
+                        <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+                        <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+                        <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+                    </svg>
+                    Sign in with Google
+                </button>
+                <div class="text-center">
+                    <button class="text-gray-500 text-sm hover:text-gray-400 transition-colors" onclick="hideAdminLogin()">
+                        Cancel
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Dashboard -->
+    <div class="admin-dashboard" id="adminDashboard">
+        <!-- Admin Sidebar -->
+        <div class="admin-sidebar">
+            <div class="px-5 mb-8">
+                <h2 class="font-heading text-lg font-bold bg-gradient-to-r from-accent-orange via-accent-red to-accent-purple bg-clip-text text-transparent sidebar-text">LIT DRIP</h2>
+            </div>
+            <nav class="space-y-1">
+                <a href="#" class="flex items-center gap-3 px-5 py-3 text-white bg-white/5 rounded-r-lg" onclick="showAdminSection('dashboard')">
+                    <span class="iconify sidebar-icon" data-icon="lucide:layout-dashboard" data-width="20"></span>
+                    <span class="sidebar-text">Dashboard</span>
+                </a>
+                <a href="#" class="flex items-center gap-3 px-5 py-3 text-gray-400 hover:text-white hover:bg-white/5 rounded-r-lg transition-colors" onclick="showAdminSection('products')">
+                    <span class="iconify sidebar-icon" data-icon="lucide:package" data-width="20"></span>
+                    <span class="sidebar-text">Products</span>
+                </a>
+                <a href="#" class="flex items-center gap-3 px-5 py-3 text-gray-400 hover:text-white hover:bg-white/5 rounded-r-lg transition-colors" onclick="showAdminSection('orders')">
+                    <span class="iconify sidebar-icon" data-icon="lucide:shopping-cart" data-width="20"></span>
+                    <span class="sidebar-text">Orders</span>
+                </a>
+                <a href="#" class="flex items-center gap-3 px-5 py-3 text-gray-400 hover:text-white hover:bg-white/5 rounded-r-lg transition-colors" onclick="showAdminSection('banners')">
+                    <span class="iconify sidebar-icon" data-icon="lucide:image" data-width="20"></span>
+                    <span class="sidebar-text">Banners</span>
+                </a>
+                <a href="#" class="flex items-center gap-3 px-5 py-3 text-gray-400 hover:text-white hover:bg-white/5 rounded-r-lg transition-colors" onclick="showAdminSection('discounts')">
+                    <span class="iconify sidebar-icon" data-icon="lucide:percent" data-width="20"></span>
+                    <span class="sidebar-text">Discounts</span>
+                </a>
+            </nav>
+            <div class="absolute bottom-0 left-0 right-0 p-5 border-t border-gray-800">
+                <button class="flex items-center gap-3 text-gray-400 hover:text-white transition-colors w-full" onclick="logoutAdmin()">
+                    <span class="iconify sidebar-icon" data-icon="lucide:log-out" data-width="20"></span>
+                    <span class="sidebar-text">Logout</span>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Admin Content -->
+        <div class="admin-content">
+            <!-- Dashboard Section -->
+            <div class="admin-section" id="adminDashboard">
+                <div class="flex items-center justify-between mb-8">
+                    <div>
+                        <h1 class="font-heading text-2xl font-bold">Dashboard</h1>
+                        <p class="text-gray-400 text-sm">Welcome back, Admin</p>
+                    </div>
+                    <button class="bg-gradient-to-r from-accent-orange to-accent-red text-white font-medium px-4 py-2 rounded-lg hover:opacity-90 transition-opacity" onclick="showAdminSection('products'); showAddProductForm();">
+                        Add Product
+                    </button>
+                </div>
+                
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                    <div class="glass rounded-xl p-5">
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="text-gray-400 text-sm">Total Revenue</span>
+                            <span class="iconify text-green-500" data-icon="lucide:trending-up" data-width="18"></span>
+                        </div>
+                        <p class="font-heading text-2xl font-bold">$24,563</p>
+                        <p class="text-green-500 text-xs mt-1">+12.5% from last month</p>
+                    </div>
+                    <div class="glass rounded-xl p-5">
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="text-gray-400 text-sm">Orders</span>
+                            <span class="iconify text-accent-orange" data-icon="lucide:shopping-cart" data-width="18"></span>
+                        </div>
+                        <p class="font-heading text-2xl font-bold">342</p>
+                        <p class="text-green-500 text-xs mt-1">+8.2% from last month</p>
+                    </div>
+                    <div class="glass rounded-xl p-5">
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="text-gray-400 text-sm">Products</span>
+                            <span class="iconify text-accent-purple" data-icon="lucide:package" data-width="18"></span>
+                        </div>
+                        <p class="font-heading text-2xl font-bold">48</p>
+                        <p class="text-gray-500 text-xs mt-1">3 low in stock</p>
+                    </div>
+                    <div class="glass rounded-xl p-5">
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="text-gray-400 text-sm">Customers</span>
+                            <span class="iconify text-accent-red" data-icon="lucide:users" data-width="18"></span>
+                        </div>
+                        <p class="font-heading text-2xl font-bold">1,247</p>
+                        <p class="text-green-500 text-xs mt-1">+5.1% from last month</p>
+                    </div>
+                </div>
+                
+                <div class="glass rounded-xl p-5">
+                    <h2 class="font-heading text-lg font-bold mb-4">Recent Orders</h2>
+                    <div class="overflow-x-auto">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>Order ID</th>
+                                    <th>Customer</th>
+                                    <th>Date</th>
+                                    <th>Amount</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="font-mono text-sm">#LD-123456</td>
+                                    <td>John Doe</td>
+                                    <td>Oct 15, 2023</td>
+                                    <td>$149.98</td>
+                                    <td><span class="bg-yellow-500/20 text-yellow-400 text-xs px-2 py-1 rounded-full">Processing</span></td>
+                                    <td>
+                                        <button class="text-accent-orange hover:underline text-sm" onclick="updateOrderStatus('LD-123456', 'shipped')">Mark Shipped</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="font-mono text-sm">#LD-123455</td>
+                                    <td>Jane Smith</td>
+                                    <td>Oct 15, 2023</td>
+                                    <td>$89.99</td>
+                                    <td><span class="bg-blue-500/20 text-blue-400 text-xs px-2 py-1 rounded-full">Shipped</span></td>
+                                    <td>
+                                        <button class="text-accent-orange hover:underline text-sm" onclick="updateOrderStatus('LD-123455', 'delivered')">Mark Delivered</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="font-mono text-sm">#LD-123454</td>
+                                    <td>Alex Johnson</td>
+                                    <td>Oct 14, 2023</td>
+                                    <td>$199.97</td>
+                                    <td><span class="bg-green-500/20 text-green-400 text-xs px-2 py-1 rounded-full">Delivered</span></td>
+                                    <td>
+                                        <span class="text-gray-500 text-sm">Completed</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Products Section -->
+            <div class="admin-section hidden" id="adminProducts">
+                <div class="flex items-center justify-between mb-8">
+                    <div>
+                        <h1 class="font-heading text-2xl font-bold">Products</h1>
+                        <p class="text-gray-400 text-sm">Manage your product inventory</p>
+                    </div>
+                    <button class="bg-gradient-to-r from-accent-orange to-accent-red text-white font-medium px-4 py-2 rounded-lg hover:opacity-90 transition-opacity" onclick="showAddProductForm()">
+                        Add Product
+                    </button>
+                </div>
+                
+                <!-- Add/Edit Product Form -->
+                <div class="glass rounded-xl p-6 mb-8 hidden" id="productForm">
+                    <div class="flex items-center justify-between mb-6">
+                        <h2 class="font-heading text-lg font-bold" id="productFormTitle">Add New Product</h2>
+                        <button class="text-gray-400 hover:text-white transition-colors" onclick="hideProductForm()">
+                            <span class="iconify" data-icon="lucide:x" data-width="20"></span>
+                        </button>
+                    </div>
+                    <form onsubmit="saveProduct(event)">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                            <div>
+                                <label class="block text-sm text-gray-400 mb-2">Product Name</label>
+                                <input type="text" id="productName" required class="w-full bg-dark-700 text-white rounded-lg py-3 px-4 focus:outline-none focus:ring-2 focus:ring-accent-orange/50" placeholder="LIT DRIP Essential Tee">
+                            </div>
+                            <div>
+                                <label class="block text-sm text-gray-400 mb-2">Category</label>
+                                <select id="productCategory" required class="w-full bg-dark-700 text-white rounded-lg py-3 px-4 focus:outline-none focus:ring-2 focus:ring-accent-orange/50">
+                                    <option value="">Select Category</option>
+                                    <option value="tshirts">T-Shirts</option>
+                                    <option value="hoodies">Hoodies</option>
+                                    <option value="pants">Pants</option>
+                                    <option value="accessories">Accessories</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                            <div>
+                                <label class="block text-sm text-gray-400 mb-2">Price ($)</label>
+                                <input type="number" id="productPrice" required min="0" step="0.01" class="w-full bg-dark-700 text-white rounded-lg py-3 px-4 focus:outline-none focus:ring-2 focus:ring-accent-orange/50" placeholder="59.99">
+                            </div>
+                            <div>
+                                <label class="block text-sm text-gray-400 mb-2">Stock Quantity</label>
+                                <input type="number" id="productStock" required min="0" class="w-full bg-dark-700 text-white rounded-lg py-3 px-4 focus:outline-none focus:ring-2 focus:ring-accent-orange/50" placeholder="100">
+                            </div>
+                            <div>
+                                <label class="block text-sm text-gray-400 mb-2">Badge</label>
+                                <select id="productBadge" class="w-full bg-dark-700 text-white rounded-lg py-3 px-4 focus:outline-none focus:ring-2 focus:ring-accent-orange/50">
+                                    <option value="">None</option>
+                                    <option value="new">New Arrival</option>
+                                    <option value="hot">Hot Drop</option>
+                                    <option value="bestseller">Best Seller</option>
+                                    <option value="almostsoldout">Almost Sold Out</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-sm text-gray-400 mb-2">Description</label>
+                            <textarea id="productDescription" rows="3" class="w-full bg-dark-700 text-white rounded-lg py-3 px-4 focus:outline-none focus:ring-2 focus:ring-accent-orange/50 resize-none" placeholder="Premium quality cotton tee with a modern fit..."></textarea>
+                        </div>
+                        <div class="mb-6">
+                            <label class="block text-sm text-gray-400 mb-2">Product Images</label>
+                            <div class="border-2 border-dashed border-gray-700 rounded-lg p-8 text-center hover:border-gray-600 transition-colors cursor-pointer" onclick="document.getElementById('productImages').click()">
+                                <span class="iconify text-gray-500 mx-auto mb-2" data-icon="lucide:upload-cloud" data-width="40"></span>
+                                <p class="text-gray-400 mb-1">Click to upload or drag and drop</p>
+                                <p class="text-gray-600 text-sm">PNG, JPG, GIF up to 10MB</p>
+                                <input type="file" id="productImages" multiple accept="image/*" class="hidden" onchange="handleImageUpload(this)">
+                            </div>
+                            <div class="flex flex-wrap gap-2 mt-3" id="imagePreview">
+                                <!-- Image previews will be added here -->
+                            </div>
+                        </div>
+                        <div class="flex gap-3">
+                            <button type="submit" class="bg-gradient-to-r from-accent-orange to-accent-red text-white font-medium px-6 py-2 rounded-lg hover:opacity-90 transition-opacity">
+                                Save Product
+                            </button>
+                            <button type="button" class="bg-dark-600 text-white font-medium px-6 py-2 rounded-lg hover:bg-dark-500 transition-colors" onclick="hideProductForm()">
+                                Cancel
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                
+                <!-- Products Table -->
+                <div class="glass rounded-xl overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Category</th>
+                                    <th>Price</th>
+                                    <th>Stock</th>
+                                    <th>Badge</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="productsTable">
+                                <!-- Products will be injected here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Orders Section -->
+            <div class="admin-section hidden" id="adminOrders">
+                <div class="mb-8">
+                    <h1 class="font-heading text-2xl font-bold">Orders</h1>
+                    <p class="text-gray-400 text-sm">View and manage customer orders</p>
+                </div>
+                
+                <div class="glass rounded-xl overflow-hidden">
+                    <div class="p-5 border-b border-gray-800 flex flex-col sm:flex-row gap-4">
+                        <
