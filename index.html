@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>LIT DRIP | Wear The Future</title>
+  <!-- Google Fonts: Space Grotesk + Inter -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Font Awesome 6 (free) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #0A0A0A;
+      color: #EDEDED;
+      overflow-x: hidden;
+      scroll-behavior: smooth;
+    }
+
+    h1, h2, h3, h4, .logo, .hero-tagline, .price, .btn, .nav-links a {
+      font-family: 'Space Grotesk', sans-serif;
+    }
+
+    /* Glassmorphism + premium glow */
+    .glass-card {
+      background: rgba(20, 20, 25, 0.65);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 32px;
+    }
+
+    /* custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #111;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #ff5e00;
+      border-radius: 8px;
+    }
+
+    /* animations */
+    @keyframes fadeUp {
+      0% { opacity: 0; transform: translateY(30px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+    .reveal {
+      animation: fadeUp 0.7s cubic-bezier(0.2, 0.9, 0.4, 1.1) forwards;
+    }
+    .loading-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #000;
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ff5e00;
+      font-size: 2rem;
+      font-weight: bold;
+      transition: opacity 0.8s ease;
+    }
+    /* floating effect */
+    .product-card:hover {
+      transform: translateY(-10px) scale(1.02);
+      box-shadow: 0 20px 35px -12px rgba(255, 94, 0, 0.3);
+      border-color: rgba(255, 94, 0, 0.4);
+    }
+    .magnetic-btn {
+      transition: transform 0.2s ease;
+    }
+    .btn-glow {
+      background: linear-gradient(95deg, #ff5e00, #ff2b8e);
+      border: none;
+      transition: all 0.3s;
+    }
+    .btn-glow:hover {
+      box-shadow: 0 0 18px #ff5e00;
+      transform: scale(1.02);
+    }
+    .neon-text {
+      text-shadow: 0 0 5px #ff5e00, 0 0 10px rgba(255,94,0,0.5);
+    }
+    /* cart drawer */
+    .cart-drawer {
+      position: fixed;
+      top: 0;
+      right: -450px;
+      width: 450px;
+      height: 100vh;
+      background: #0f0f12;
+      z-index: 1000;
+      box-shadow: -5px 0 25px rgba(0,0,0,0.7);
+      transition: right 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      border-left: 1px solid rgba(255,94,0,0.4);
+    }
+    .cart-drawer.open {
+      right: 0;
+    }
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.7);
+      backdrop-filter: blur(5px);
+      z-index: 999;
+      display: none;
+    }
+    .overlay.active {
+      display: block;
+    }
+    /* product quick grid */
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 2rem;
+    }
+    .badge-hot {
+      background: #ff2b8e;
+      font-size: 0.7rem;
+      padding: 4px 10px;
+      border-radius: 40px;
+    }
+    .countdown-timer {
+      background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(8px);
+      font-weight: bold;
+    }
+    /* responsive */
+    @media (max-width: 800px) {
+      .cart-drawer { width: 100%; right: -100%; }
+      .hero-section h1 { font-size: 3rem; }
+    }
+    input, select, button { font-family: inherit; }
+    .admin-panel {
+      background: #0e0e12;
+      border-radius: 32px;
+      border: 1px solid #2a2a2e;
+    }
+    .flex-between { display: flex; justify-content: space-between; align-items: center; }
+    .grid-cols-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .toast-msg {
+      position: fixed;
+      bottom: 25px;
+      left: 25px;
+      background: #1f1f24;
+      border-left: 6px solid #ff5e00;
+      padding: 12px 20px;
+      border-radius: 20px;
+      z-index: 1200;
+      font-weight: 500;
+      backdrop-filter: blur(10px);
+    }
+  </style>
+</head>
+<body>
+
+<div class="loading-screen" id="loadingScreen">
+  <span>LIT DRIP // LOADING REALITY</span>
+</div>
+
+<!-- Cart Drawer -->
+<div class="overlay" id="cartOverlay"></div>
+<div class="cart-drawer" id="cartDrawer">
+  <div class="flex-between" style="margin-bottom: 2rem;">
+    <h3 style="font-family: 'Space Grotesk';">YOUR BAG</h3>
+    <i class="fas fa-times" id="closeCartBtn" style="cursor:pointer; font-size: 1.5rem;"></i>
+  </div>
+  <div id="cartItemsList" style="flex:1; overflow-y: auto;"></div>
+  <div class="cart-total" style="border-top: 1px solid #333; padding-top: 1rem; margin-top: 1rem;">
+    <div class="flex-between"><span>Subtotal</span><span id="cartSubtotal">$0</span></div>
+    <div class="flex-between"><span>Shipping</span><span>Calculated at checkout</span></div>
+    <button id="checkoutBtnSimulate" class="btn btn-glow" style="width:100%; margin-top: 1rem; padding: 1rem; border-radius: 40px; color:white; font-weight: bold;">CHECKOUT →</button>
+  </div>
+</div>
+
+<!-- Sticky Navbar -->
+<nav style="position: sticky; top:0; z-index: 100; backdrop-filter: blur(16px); background: rgba(10,10,10,0.85); border-bottom: 1px solid rgba(255,94,0,0.2); padding: 1rem 5%;">
+  <div style="display: flex; justify-content: space-between; align-items: center;">
+    <div class="logo" style="font-size: 1.8rem; font-weight: 700; letter-spacing: -1px;">LIT<span style="color:#ff5e00;">DRIP</span></div>
+    <div style="display: flex; gap: 2rem; align-items: center;">
+      <a href="#" data-nav="home" style="text-decoration:none; color:white;">Home</a>
+      <a href="#" data-nav="shop" style="text-decoration:none; color:white;">Shop</a>
+      <a href="#" data-nav="about" style="text-decoration:none; color:white;">Movement</a>
+      <a href="#" data-nav="contact" style="text-decoration:none; color:white;">Connect</a>
+      <i class="fas fa-search" id="searchIconNav" style="cursor:pointer;"></i>
+      <i class="far fa-heart" id="wishlistIconNav" style="cursor:pointer;"></i>
+      <i class="fas fa-shopping-bag" id="cartIconNav" style="cursor:pointer; font-size: 1.3rem;"></i>
+      <i class="fas fa-user-cog" id="adminIcon" style="cursor:pointer;"></i>
+    </div>
+  </div>
+</nav>
+
+<main id="appContent">
+  <!-- Homepage loaded dynamically but we build base inline sections with js -->
+</main>
+
+<script>
+  // ---------- MOCK PRODUCT DATA -------------
+  let products = [
+    { id: 1, name: "CYBERDRIP HOODIE", price: 89, category: "hoodie", size: ["S","M","L","XL"], color: ["Black","Neon Orange"], stock: 12, image: "https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=500&auto=format", badge: "Hot Drop", isNew: true },
+    { id: 2, name: "NEON RAGE TEE", price: 49, category: "tee", size: ["S","M","L"], color: ["Black","White"], stock: 24, image: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=500&auto=format", badge: "New Arrival" },
+    { id: 3, name: "FUTURE CARGO PANTS", price: 119, category: "pants", size: ["28","30","32","34"], color: ["Charcoal"], stock: 8, image: "https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=500&auto=format", badge: "Almost Sold Out" },
+    { id: 4, name: "LIT DRIP SNEAKERS", price: 159, category: "shoes", size: ["7","8","9","10"], color: ["Black/Neon"], stock: 5, image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=500&auto=format", badge: "Limited" },
+    { id: 5, name: "GAMING JERSEY", price: 79, category: "tee", size: ["S","M","L"], color: ["Purple"], stock: 14, image: "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=500&auto=format", badge: "Hot Drop" },
+    { id: 6, name: "CYBER CAP", price: 39, category: "accessory", size: ["One Size"], color: ["Black"], stock: 30, image: "https://images.unsplash.com/photo-1588850561407-ed78c282e89b?w=500&auto=format", badge: "New" }
+  ];
+  let cart = [];
+  let wishlist = [];
+  let currentPage = "home";
+  
+  // admin whitelist (google login simulation)
+  let adminLoggedIn = false;
+  const adminEmailWhitelist = ["admin@litdrip.com"];
+  
+  // helper functions
+  function saveCart() { localStorage.setItem("litdrip_cart", JSON.stringify(cart)); updateCartCount(); }
+  function loadCart() { const c = localStorage.getItem("litdrip_cart"); if(c) cart = JSON.parse(c); updateCartCount(); renderCartDrawer(); }
+  function updateCartCount() { const count = cart.reduce((a,b)=>a+b.qty,0); document.querySelectorAll(".cart-count").forEach(el => el?.remove()); const icon = document.getElementById("cartIconNav"); if(icon && count>0) { const badge = document.createElement("span"); badge.className="cart-count"; badge.innerText=count; badge.style="position:absolute; background:#ff5e00; border-radius:30px; padding:2px 6px; font-size:10px; margin-left:-12px; margin-top:-8px;"; icon.style.position="relative"; icon.appendChild(badge); } }
+  function renderCartDrawer() {
+    const container = document.getElementById("cartItemsList");
+    if(!container) return;
+    if(cart.length===0) { container.innerHTML="<div style='text-align:center; margin-top:2rem;'>🔥 Bag empty, flex it.</div>"; document.getElementById("cartSubtotal").innerText="$0"; return; }
+    let html=``; let total=0;
+    cart.forEach((item,idx)=>{
+      const prod = products.find(p=>p.id==item.id);
+      if(!prod) return;
+      total += prod.price*item.qty;
+      html+=`<div style="display:flex; gap:1rem; margin-bottom:1rem; border-bottom:1px solid #222; padding-bottom:0.8rem;">
+        <img src="${prod.image}" style="width:70px; height:70px; object-fit:cover; border-radius:16px;">
+        <div style="flex:1"><strong>${prod.name}</strong><div>$${prod.price} x ${item.qty}</div><div style="display:flex; gap:8px; margin-top:6px;"><button class="cart-qty-btn" data-idx="${idx}" data-delta="-1">-</button><span>${item.qty}</span><button class="cart-qty-btn" data-idx="${idx}" data-delta="1">+</button><button class="cart-remove" data-idx="${idx}">remove</button></div></div></div>`;
+    });
+    container.innerHTML=html;
+    document.getElementById("cartSubtotal").innerText=`$${total}`;
+    document.querySelectorAll(".cart-qty-btn").forEach(btn=>btn.addEventListener("click",(e)=>{
+      const idx = parseInt(btn.dataset.idx); const delta = parseInt(btn.dataset.delta);
+      if(cart[idx]){ cart[idx].qty += delta; if(cart[idx].qty<=0) cart.splice(idx,1); saveCart(); renderCartDrawer(); renderCurrentPage(); }
+    }));
+    document.querySelectorAll(".cart-remove").forEach(btn=>btn.addEventListener("click",(e)=>{
+      const idx = parseInt(btn.dataset.idx); cart.splice(idx,1); saveCart(); renderCartDrawer(); renderCurrentPage();
+    }));
+  }
+  function addToCart(productId, size=null, qty=1){
+    const existing = cart.find(i=>i.id===productId);
+    if(existing) existing.qty+=qty;
+    else cart.push({id:productId, qty, size:size||"M"});
+    saveCart(); renderCartDrawer(); showToast("Added to bag 🔥"); renderCurrentPage();
+  }
+  function showToast(msg){ const toast=document.createElement("div"); toast.className="toast-msg"; toast.innerText=msg; document.body.appendChild(toast); setTimeout(()=>toast.remove(),2000); }
+  
+  // simulate admin panel
+  function showAdminModal(){
+    if(!adminLoggedIn){
+      const email=prompt("Admin Google Login (whitelist):", "admin@litdrip.com");
+      if(email && adminEmailWhitelist.includes(email)){ adminLoggedIn=true; showToast("Admin access granted"); renderAdminDashboard(); }
+      else alert("Not authorized. Only whitelisted emails.");
+      return;
+    }
+    renderAdminDashboard();
+  }
+  function renderAdminDashboard(){
+    const modalDiv = document.createElement("div");
+    modalDiv.style.position="fixed"; modalDiv.style.top="10%"; modalDiv.style.left="10%"; modalDiv.style.width="80%"; modalDiv.style.height="80%"; modalDiv.style.background="#0c0c10"; modalDiv.style.zIndex="2000"; modalDiv.style.overflow="auto"; modalDiv.style.borderRadius="32px"; modalDiv.style.padding="2rem"; modalDiv.style.border="1px solid #ff5e00";
+    const close = ()=>modalDiv.remove();
+    modalDiv.innerHTML = `<div style="display:flex; justify-content:space-between;"><h2>⚡ ADMIN DASHBOARD · LIT DRIP</h2><button id="closeAdminBtn">✖</button></div>
+    <div><button id="addProductBtn">+ ADD NEW PRODUCT</button><div id="productListAdmin"></div><hr/><h3>Orders (demo)</h3><div id="ordersListAdmin"></div><div><h3>Manage Banners / Hero Text</h3><input id="heroInput" placeholder="Hero tagline" value="Wear The Future."><button id="updateHeroBtn">Update Hero</button></div></div>`;
+    document.body.appendChild(modalDiv);
+    document.getElementById("closeAdminBtn").onclick=close;
+    // render product list
+    const prodContainer = document.getElementById("productListAdmin");
+    function renderProdAdmin(){
+      prodContainer.innerHTML = products.map(p=>`<div style="background:#1a1a1f; margin:0.5rem; padding:0.8rem; border-radius:20px;">${p.name} - $${p.price} stock:${p.stock} <button data-id="${p.id}" class="editProdBtn">edit</button> <button data-id="${p.id}" class="deleteProdBtn">delete</button></div>`).join("");
+      document.querySelectorAll(".editProdBtn").forEach(btn=>btn.addEventListener("click",()=>{
+        const pid = parseInt(btn.dataset.id); const prod = products.find(p=>p.id===pid);
+        const newName=prompt("name",prod.name); const newPrice=prompt("price",prod.price); const newStock=prompt("stock",prod.stock);
+        if(newName) prod.name=newName; if(newPrice) prod.price=parseFloat(newPrice); if(newStock) prod.stock=parseInt(newStock);
+        renderProdAdmin(); renderCurrentPage();
+      }));
+      document.querySelectorAll(".deleteProdBtn").forEach(btn=>btn.addEventListener("click",()=>{ const pid=parseInt(btn.dataset.id); products=products.filter(p=>p.id!==pid); renderProdAdmin(); renderCurrentPage(); }));
+    }
+    renderProdAdmin();
+    document.getElementById("addProductBtn").onclick=()=>{
+      const newId = Date.now();
+      products.push({id:newId, name:"New Drop", price:69, category:"tee", size:["S","M","L"], color:["Black"], stock:20, image:"https://images.unsplash.com/photo-1556905055-8f358a7a47b2?w=500&auto=format", badge:"New"});
+      renderProdAdmin(); renderCurrentPage();
+    };
+    document.getElementById("updateHeroBtn").onclick=()=>{
+      const newHero = document.getElementById("heroInput").value;
+      if(newHero) { document.querySelector(".hero-tagline-main") && (document.querySelector(".hero-tagline-main").innerText = newHero); showToast("Hero updated"); }
+    };
+    const ordersDemo = [{id:"ORD-001", status:"Pending"},{id:"ORD-002", status:"Shipped"}];
+    document.getElementById("ordersListAdmin").innerHTML = ordersDemo.map(o=>`<div>Order ${o.id} - ${o.status} <button>Mark Shipped</button></div>`).join("");
+  }
+  
+  // -------- PAGE RENDERING ENGINE --------
+  function renderHome(){
+    return `<section class="hero-section" style="height: 90vh; display: flex; align-items: center; justify-content: center; position: relative; background: radial-gradient(circle at 20% 30%, #0f0f13, #030303);">
+      <div style="text-align: center; z-index: 2;"><h1 class="hero-tagline-main" style="font-size: 5rem; font-weight:800; letter-spacing:-2px;">Wear The Future.</h1>
+      <p style="font-size:1.2rem; margin:1rem;">Next-gen streetwear · Gaming culture · Limitless energy</p>
+      <div style="display: flex; gap: 1rem; justify-content: center;"><button class="btn btn-glow magnetic-btn" style="padding: 1rem 2rem; border-radius: 60px;" onclick="document.querySelector('[data-nav=\'shop\']').click();">Shop Now</button><button class="btn" style="background: transparent; border:1px solid white; border-radius:60px; padding:1rem 2rem;">New Drop</button></div>
+      <div class="countdown-timer glass-card" style="display: inline-flex; margin-top: 2rem; gap: 1rem; padding: 1rem 2rem;" id="countdownArea"></div></div>
+    </section>
+    <div style="background: #0b0b0e; padding: 3rem 5%;"><h2 class="neon-text">⚡ BESTSELLERS</h2><div class="product-grid" id="bestsellerGrid"></div></div>
+    <div style="padding: 3rem 5%; background: #111217;"><h2>🔥 TRENDING COLLECTIONS</h2><div class="bento-grid" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px,1fr)); gap:1.5rem;"><div class="glass-card" style="padding:2rem; text-align:center;">CYBER DROPS</div><div class="glass-card" style="padding:2rem;">GAMING SERIES</div><div class="glass-card" style="padding:2rem;">LIMITED EDITION</div></div></div>
+    <div class="scrolling-marquee" style="overflow:hidden; white-space:nowrap; background:#000; padding:1rem; font-weight:bold;">#LITDRIP  ·  FUTUREWEAR  ·  HYPECULTURE  ·  EXCLUSIVE DROPS  ·  GAMING FIT</div>
+    <div style="padding:3rem 5%; text-align:center;"><button class="btn-glow btn" id="newsletterBtn" style="padding:0.8rem 2rem; border-radius:60px;">JOIN THE MOVEMENT →</button></div>`;
+  }
+  function renderShop(){
+    let filters=`<input type="text" id="searchInputShop" placeholder="Search drips..." style="width:100%; padding:1rem; border-radius:60px; background:#1e1e24; border:none; color:white;">
+    <div style="display:flex; gap:1rem; margin:1rem 0;"><select id="categoryFilter"><option>all</option><option>hoodie</option><option>tee</option><option>pants</option></select><select id="sortFilter"><option>price-asc</option><option>price-desc</option></select></div>
+    <div class="product-grid" id="shopProductGrid"></div>`;
+    return `<div style="padding:2rem 5%;"><h2>THE ARCHIVE</h2>${filters}</div>`;
+  }
+  function renderAbout(){ return `<div style="padding: 4rem 10%; text-align:center;"><h1 style="font-size:4rem;">MOVEMENT. CULTURE. FUTURE.</h1><p style="font-size:1.2rem; margin-top:2rem;">LIT DRIP is more than fashion — a youth-led revolution where gaming, streetwear, and confidence collide. For the creators, the grinders, the ones who flex originality.</p><img src="https://images.unsplash.com/photo-1523381210434-271e8be1f52b?w=800&auto=format" style="margin-top:2rem; border-radius:48px; width:100%; max-width:600px;"></div>`;}
+  function renderContact(){ return `<div style="padding: 4rem 5%; display:grid; gap:2rem;"><div class="glass-card" style="padding:2rem;"><h3>HIT THE CREW</h3><input placeholder="email" style="background:#222; padding:1rem; border-radius:60px;"><textarea placeholder="message"></textarea><button class="btn-glow">Send</button></div><div><i class="fab fa-instagram"></i> @litdrip <i class="fab fa-tiktok"></i> @litdrip <i class="fab fa-discord"></i> /litdrip</div></div>`;}
+  
+  function renderCurrentPage(){
+    let html="";
+    if(currentPage==="home") html=renderHome();
+    else if(currentPage==="shop") html=renderShop();
+    else if(currentPage==="about") html=renderAbout();
+    else html=renderContact();
+    document.getElementById("appContent").innerHTML=html;
+    if(currentPage==="home"){
+      const bestContainer = document.getElementById("bestsellerGrid");
+      if(bestContainer) bestContainer.innerHTML = products.slice(0,3).map(p=>renderProductCard(p)).join("");
+      const countdownDiv = document.getElementById("countdownArea");
+      let timeLeft = 86400; // 24h
+      setInterval(()=>{if(countdownDiv){let hrs=Math.floor(timeLeft/3600); let min=Math.floor((timeLeft%3600)/60); let sec=timeLeft%60; countdownDiv.innerHTML=`⏳ NEXT DROP: ${hrs}h ${min}m ${sec}s`; if(timeLeft>0)timeLeft--;}},1000);
+    }
+    if(currentPage==="shop"){
+      function filterAndRender(){
+        let filtered = [...products];
+        const search = document.getElementById("searchInputShop")
