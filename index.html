@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>STYLO - Premium Clothing Store</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
+    <style>
+        /* ========== RESET & BASE ========== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: #111;
+            background: #fff;
+            overflow-x: hidden;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: #666;
+            font-size: 0.95rem;
+            margin-bottom: 40px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 14px 36px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            border: 2px solid #111;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            background: transparent;
+            color: #111;
+        }
+
+        .btn:hover {
+            background: #111;
+            color: #fff;
+        }
+
+        .btn-primary {
+            background: #111;
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            background: #333;
+            border-color: #333;
+        }
+
+        /* ========== TOP ANNOUNCEMENT BAR ========== */
+        .announcement-bar {
+            background: #111;
+            color: #fff;
+            text-align: center;
+            padding: 8px 0;
+            font-size: 0.8rem;
+            letter-spacing: 0.5px;
+        }
+
+        .announcement-bar span {
+            font-weight: 600;
+        }
+
+        /* ========== HEADER ========== */
+        header {
+            position: sticky;
+            top: 0;
+            background: #fff;
+            z-index: 1000;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .header-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 18px 0;
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .logo span {
+            color: #888;
+        }
+
+        /* Navigation */
+        .nav-links {
+            display: flex;
+            gap: 32px;
+        }
+
+        .nav-links a {
+            font-size: 0.85rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #888;
+        }
+
+        .nav-links a.active {
+            border-bottom: 2px solid #111;
+            padding-bottom: 4px;
+        }
+
+        /* Header Icons */
+        .header-icons {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .header-icons i {
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .header-icons i:hover {
+            color: #888;
+        }
+
+        .cart-icon {
+            position: relative;
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -10px;
+            background: #111;
+            color: #fff;
+            font-size: 0.65rem;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+
+        /* Mobile Menu Toggle */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+        }
+
+        .hamburger span {
+            width: 26px;
+            height: 2px;
+            background: #111;
+            transition: all 0.3s;
+        }
+
+        /* ========== HERO SECTION ========== */
+        .hero {
+            padding: 60px 0 80px;
+            background: #fafafa;
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .hero-content h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            line-height: 1.15;
+            margin-bottom: 20px;
+        }
+
+        .hero-content p {
+            font-size: 1.05rem;
+            color: #555;
+            line-height: 1.7;
+            margin-bottom: 32px;
+            max-width: 480px;
+        }
+
+        .hero-image {
+            position: relative;
+        }
+
+        .hero-image img {
+            width: 100%;
+            height: 520px;
+            object-fit: cover;
+            border-radius: 12px;
+        }
+
+        .hero-badge {
+            position: absolute;
+            bottom: -20px;
+            left: -20px;
+            background: #fff;
+            padding: 20px 28px;
+            border-radius: 8px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+        }
+
+        .hero-badge h3 {
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+
+        .hero-badge p {
+            font-size: 0.8rem;
+            color: #888;
+            margin: 4px 0 0;
+        }
+
+        /* ========== CATEGORIES ========== */
+        .categories {
+            padding: 80px 0;
+        }
+
+        .cat-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        .cat-card {
+            position: relative;
+            height: 320px;
+            border-radius: 12px;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .cat-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .cat-card:hover img {
+            transform: scale(1.08);
+        }
+
+        .cat-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 30px;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
+            color: #fff;
+        }
+
+        .cat-overlay h3 {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .cat-overlay p {
+            font-size: 0.85rem;
+            opacity: 0.8;
+        }
+
+        /* ========== FEATURED PRODUCTS ========== */
+        .products {
+            padding: 80px 0;
+            background: #fafafa;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+        }
+
+        .product-card {
+            background: #fff;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+
+        .product-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.06);
+        }
+
+        .product-img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+        }
+
+        .product-info {
+            padding: 18px 16px 20px;
+        }
+
+        .product-name {
+            font-size: 0.95rem;
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+
+        .product-price {
+            font-size: 1.05rem;
+            font-weight: 700;
+        }
+
+        .product-price .old-price {
+            font-weight: 400;
+            color: #aaa;
+            text-decoration: line-through;
+            margin-left: 8px;
+            font-size: 0.9rem;
+        }
+
+        .product-badge {
+            display: inline-block;
+            background: #111;
+            color: #fff;
+            font-size: 0.7rem;
+            padding: 4px 10px;
+            border-radius: 4px;
+            margin-bottom: 8px;
+            letter-spacing: 0.5px;
+        }
+
+        .product-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 14px;
+        }
+
+        .product-actions .btn {
+            padding: 8px 18px;
+            font-size: 0.75rem;
+            flex: 1;
+            text-align: center;
+        }
+
+        /* ========== PROMO BANNER ========== */
+        .promo {
+            padding: 80px 0;
+            background: #111;
+            color: #fff;
+            text-align: center;
+        }
+
+        .promo h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.8rem;
+            margin-bottom: 12px;
+        }
+
+        .promo p {
+            color: #bbb;
+            font-size: 1.05rem;
+            margin-bottom: 32px;
+        }
+
+        .promo .btn {
+            border-color: #fff;
+            color: #fff;
+        }
+
+        .promo .btn:hover {
+            background: #fff;
+            color: #111;
+        }
+
+        .countdown {
+            display: flex;
+            justify-content: center;
+            gap: 28px;
+            margin: 30px 0 36px;
+        }
+
+        .countdown-item {
+            text-align: center;
+        }
+
+        .countdown-item .num {
+            font-size: 2.8rem;
+            font-weight: 700;
+            line-height: 1;
+        }
+
+        .countdown-item .label {
+            font-size: 0.75rem;
+            color: #bbb;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 6px;
+        }
+
+        /* ========== TESTIMONIALS ========== */
+        .testimonials {
+            padding: 80px 0;
+        }
+
+        .testimonial-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        .testimonial-card {
+            background: #fafafa;
+            padding: 32px;
+            border-radius: 12px;
+        }
+
+        .testimonial-card .stars {
+            color: #f5b342;
+            margin-bottom: 14px;
+            font-size: 0.9rem;
+        }
+
+        .testimonial-card blockquote {
+            font-size: 0.95rem;
+            line-height: 1.7;
+            color: #444;
+            font-style: italic;
+        }
+
+        .testimonial-card .author {
+            margin-top: 18px;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+        .testimonial-card .author span {
+            font-weight: 400;
+            color: #888;
+        }
+
+        /* ========== NEWSLETTER ========== */
+        .newsletter {
+            padding: 80px 0;
+            background: #fafafa;
+            text-align: center;
+        }
+
+        .newsletter h2 {
+            font-size: 2rem;
+            margin-bottom: 12px;
+        }
+
+        .newsletter p {
+            color: #666;
+            margin-bottom: 28px;
+        }
+
+        .newsletter-form {
+            display: flex;
+            max-width: 480px;
+            margin: 0 auto;
+        }
+
+        .newsletter-form input {
+            flex: 1;
+            padding: 16px 20px;
+            border: 1px solid #ddd;
+            border-right: none;
+            font-size: 0.9rem;
+            outline: none;
+        }
+
+        .newsletter-form button {
+            padding: 16px 32px;
+            background: #111;
+            color: #fff;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .newsletter-form button:hover {
+            background: #333;
+        }
+
+        /* ========== FOOTER ========== */
+        footer {
+            background: #111;
+            color: #ccc;
+            padding: 60px 0 30px;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-brand .logo {
+            color: #fff;
+            font-size: 1.6rem;
+            margin-bottom: 16px;
+            display: inline-block;
+        }
+
+        .footer-brand p {
+            font-size: 0.85rem;
+            line-height: 1.7;
+            max-width: 300px;
+        }
+
+        .footer-col h4 {
+            color: #fff;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 18px;
+        }
+
+        .footer-col a {
+            display: block;
+            font-size: 0.85rem;
+            margin-bottom: 10px;
+            transition: color 0.3s;
+        }
+
+        .footer-col a:hover {
+            color: #fff;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #222;
+            padding-top: 24px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+        }
+
+        .footer-bottom .socials {
+            display: flex;
+            gap: 16px;
+        }
+
+        .footer-bottom .socials i {
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .footer-bottom .socials i:hover {
+            color: #fff;
+        }
+
+        /* ========== RESPONSIVE ========== */
+        @media (max-width: 1024px) {
+            .product-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .hero-grid {
+                gap: 40px;
+            }
+            .hero-content h1 {
+                font-size: 2.8rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: #fff;
+                flex-direction: column;
+                padding: 20px;
+                gap: 16px;
+                border-bottom: 1px solid #eee;
+            }
+            .nav-links.open {
+                display: flex;
+            }
+            .hamburger {
+                display: flex;
+            }
+            .hero-grid {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+            .hero-content p {
+                margin: 0 auto 32px;
+            }
+            .hero-content h1 {
+                font-size: 2.4rem;
+            }
+            .hero-image img {
+                height: 360px;
+            }
+            .hero-badge {
+                left: 50%;
+                transform: translateX(-50%);
+                bottom: -24px;
+                text-align: center;
+            }
+            .cat-grid {
+                grid-template-columns: 1fr;
+            }
+            .product-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .testimonial-grid {
+                grid-template-columns: 1fr;
+            }
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .countdown {
+                gap: 16px;
+            }
+            .countdown-item .num {
+                font-size: 2rem;
+            }
+            .promo h2 {
+                font-size: 2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .product-grid {
+                grid-template-columns: 1fr;
+            }
+            .footer-grid {
+                grid-template-columns: 1fr;
+            }
+            .footer-bottom {
+                flex-direction: column;
+                gap: 12px;
+                text-align: center;
+            }
+            .hero-content h1 {
+                font-size: 1.8rem;
+            }
+            .section-title {
+                font-size: 1.6rem;
+            }
+            .newsletter-form {
+                flex-direction: column;
+            }
+            .newsletter-form input {
+                border-right: 1px solid #ddd;
+                border-bottom: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== ANNOUNCEMENT BAR ===== -->
+    <div class="announcement-bar">
+        <div class="container">
+            FREE SHIPPING ON ALL ORDERS OVER ₹999 &nbsp;|&nbsp; <span>USE CODE: STYLO10</span>
+        </div>
+    </div>
+
+    <!-- ===== HEADER ===== -->
+    <header>
+        <div class="container header-inner">
+            <div class="logo">STYLO<span>.</span></div>
+
+            <nav>
+                <ul class="nav-links" id="navLinks">
+                    <li><a href="#" class="active">Home</a></li>
+                    <li><a href="#">Shop</a></li>
+                    <li><a href="#">New Arrivals</a></li>
+                    <li><a href="#">Sale</a></li>
+                    <li><a href="#">About</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </nav>
+
+            <div class="header-icons">
+                <i class="fas fa-search"></i>
+                <i class="far fa-user"></i>
+                <i class="far fa-heart"></i>
+                <div class="cart-icon">
+                    <i class="fas fa-shopping-bag"></i>
+                    <span class="cart-count">3</span>
+                </div>
+                <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- ===== HERO ===== -->
+    <section class="hero">
+        <div class="container hero-grid">
+            <div class="hero-content">
+                <h1>Elevate Your Everyday Style</h1>
+                <p>Discover premium clothing crafted for those who refuse to blend in. From timeless classics to bold new drops — your next fit starts here.</p>
+                <a href="#" class="btn btn-primary">Shop Now</a>
+                <div style="margin-top: 40px; display: flex; gap: 40px;">
+                    <div><strong style="font-size: 1.6rem;">500+</strong><br /><span style="font-size: 0.8rem; color: #888;">Products</span></div>
+                    <div><strong style="font-size: 1.6rem;">12K</strong><br /><span style="font-size: 0.8rem; color: #888;">Happy Customers</span></div>
+                    <div><strong style="font-size: 1.6rem;">4.9★</strong><br /><span style="font-size: 0.8rem; color: #888;">Avg. Rating</span></div>
+                </div>
+            </div>
+            <div class="hero-image">
+                <img src="https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=800&auto=format&fit=crop" alt="Fashion Hero" />
+                <div class="hero-badge">
+                    <h3>New Season</h3>
+                    <p>Spring/Summer 2026 — Now Live</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== CATEGORIES ===== -->
+    <section class="categories">
+        <div class="container">
+            <h2 class="section-title">Shop by Category</h2>
+            <p class="section-subtitle">Find exactly what you're looking for</p>
+            <div class="cat-grid">
+                <div class="cat-card">
+                    <img src="https://images.unsplash.com/photo-1593030761757-71fae45fa0e7?w=600&auto=format&fit=crop" alt="T-Shirts" />
+                    <div class="cat-overlay">
+                        <h3>T-Shirts</h3>
+                        <p>Essential tees & graphic prints</p>
+                    </div>
+   
