@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>SwiftXOg — Minecraft Mods, Shaders &amp; Packs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0a0a12;--bg2:#111120;--bg3:#1a1a2e;
+  --surface:rgba(255,255,255,0.04);--surface-hover:rgba(255,255,255,0.08);
+  --border:rgba(255,255,255,0.06);--border-hover:rgba(255,255,255,0.12);
+  --text:#e8e8f0;--text2:#9898b0;--text3:#686880;
+  --accent:#7c3aed;--accent2:#a855f7;--accent3:#c084fc;
+  --neon:0 0 20px rgba(124,58,237,0.3),0 0 60px rgba(124,58,237,0.1);
+  --neon2:0 0 15px rgba(168,85,247,0.4);
+  --radius:16px;--radius-sm:10px;--radius-xs:6px;
+  --font:'Inter',system-ui,-apple-system,sans-serif;--nav-h:70px;
+  --transition:0.3s cubic-bezier(0.4,0,0.2,1);
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;line-height:1.6}
+::selection{background:var(--accent);color:#fff}
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--accent);border-radius:3px}
+.bg-grid{position:fixed;inset:0;z-index:0;background-image:linear-gradient(rgba(124,58,237,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(124,58,237,0.03) 1px,transparent 1px);background-size:60px 60px;pointer-events:none}
+.bg-glow{position:fixed;z-index:0;pointer-events:none;width:600px;height:600px;border-radius:50%;filter:blur(120px);opacity:0.15}
+.bg-glow-1{top:-200px;right:-100px;background:var(--accent)}
+.bg-glow-2{bottom:-200px;left:-100px;background:var(--accent2)}
+nav{position:fixed;top:0;left:0;right:0;z-index:1000;height:var(--nav-h);background:rgba(10,10,18,0.8);backdrop-filter:blur(20px) saturate(1.5);border-bottom:1px solid var(--border);transition:var(--transition)}
+nav.scrolled{background:rgba(10,10,18,0.95)}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;height:100%;max-width:1280px;margin:0 auto;padding:0 24px}
+.nav-brand{display:flex;align-items:center;gap:12px;font-size:22px;font-weight:800;text-decoration:none;color:var(--text);letter-spacing:-0.5px}
+.nav-logo{width:34px;height:34px;flex-shrink:0;background:linear-gradient(135deg,var(--accent),var(--accent2));border-radius:10px;display:flex;align-items:center;justify-content:center;box-shadow:0 0 16px rgba(124,58,237,0.3)}
+.nav-logo svg{width:20px;height:20px;color:#fff}
+.nav-brand span{background:linear-gradient(135deg,var(--accent2),var(--accent3));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.nav-search-btn{display:flex;align-items:center;gap:8px;padding:8px 16px;border-radius:var(--radius-xs);background:var(--surface);border:1px solid var(--border);color:var(--text3);font-size:13px;cursor:pointer;transition:var(--transition);font-family:var(--font)}
+.nav-search-btn:hover{border-color:var(--border-hover);color:var(--text2)}
+.hero{position:relative;z-index:1;padding:130px 0 50px;text-align:center;overflow:hidden}
+.hero-shapes{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.hero-shape{position:absolute;border-radius:50%;border:1px solid rgba(124,58,237,0.1)}
+.hero-shape-1{width:400px;height:400px;top:-100px;right:-50px;animation:float 8s ease-in-out infinite}
+.hero-shape-2{width:300px;height:300px;bottom:-80px;left:-80px;animation:float 10s ease-in-out infinite reverse}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.hero-badge{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:100px;background:rgba(124,58,237,0.1);border:1px solid rgba(124,58,237,0.2);font-size:12px;font-weight:500;color:var(--accent3);margin-bottom:20px;letter-spacing:0.3px}
+.hero h1{font-size:clamp(36px,7vw,64px);font-weight:900;line-height:1.1;margin-bottom:12px;letter-spacing:-1.5px}
+.hero h1 span{background:linear-gradient(135deg,var(--accent2),var(--accent3),#f0abfc);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero p{font-size:clamp(15px,2.2vw,18px);color:var(--text2);max-width:560px;margin:0 auto;line-height:1.7}
+.search-section{position:relative;z-index:1;padding:0 0 26px}
+.search-bar{max-width:720px;margin:0 auto;display:flex;background:var(--bg2);border:1px solid var(--border);border-radius:100px;overflow:hidden;transition:var(--transition);box-shadow:0 8px 32px rgba(0,0,0,0.3)}
+.search-bar:focus-within{border-color:var(--accent);box-shadow:var(--neon),0 8px 32px rgba(0,0,0,0.3)}
+.search-bar input{flex:1;padding:16px 24px;background:transparent;border:none;outline:none;color:var(--text);font-size:15px;font-family:var(--font)}
+.search-bar input::placeholder{color:var(--text3)}
+.search-bar button{padding:16px 28px;background:transparent;border:none;cursor:pointer;color:var(--text2);font-size:15px;transition:var(--transition);display:flex;align-items:center;gap:8px;font-family:var(--font);font-weight:500}
+.search-bar button:hover{color:var(--accent2);background:rgba(124,58,237,0.05)}
+.tabs{position:relative;z-index:1;padding:0 0 28px}
+.tabs-inner{display:flex;justify-content:center;gap:4px;background:var(--surface);border:1px solid var(--border);border-radius:100px;padding:4px;max-width:640px;margin:0 auto}
+.tab-btn{flex:1;padding:10px 16px;border-radius:100px;border:none;background:transparent;color:var(--text2);font-size:12px;font-weight:600;cursor:pointer;transition:var(--transition);font-family:var(--font);white-space:nowrap;display:flex;align-items:center;justify-content:center;gap:4px}
+.tab-btn:hover{color:var(--text)}
+.tab-btn.active{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;box-shadow:var(--neon)}
+.tab-btn .count{display:inline-block;font-size:10px;opacity:0.65;white-space:nowrap}
+.grid-section{position:relative;z-index:1;padding:0 0 60px}
+.grid-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px}
+.grid-header h2{font-size:18px;font-weight:700;color:var(--text)}
+.grid-header .total{font-size:13px;color:var(--text3)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px}
+.card{position:relative;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px;cursor:pointer;transition:transform 0.3s ease,box-shadow 0.3s ease,border-color 0.3s ease;overflow:hidden}
+.card::before{content:'';position:absolute;inset:0;z-index:0;background:linear-gradient(135deg,transparent 40%,rgba(124,58,237,0.03));pointer-events:none;border-radius:var(--radius)}
+.card:hover{transform:scale(1.03);border-color:var(--accent);box-shadow:var(--neon)}
+.card-thumb{width:100%;aspect-ratio:16/9;border-radius:var(--radius-sm);overflow:hidden;background:var(--bg3);margin-bottom:14px;position:relative}
+.card-thumb img{width:100%;height:100%;object-fit:cover;transition:transform 0.4s ease;display:block}
+.card:hover .card-thumb img{transform:scale(1.06)}
+.card-category{position:absolute;top:10px;left:10px;z-index:2;padding:4px 10px;border-radius:100px;background:rgba(0,0,0,0.6);backdrop-filter:blur(10px);font-size:11px;font-weight:600;color:var(--accent3);text-transform:uppercase;letter-spacing:0.5px}
+.card-body{position:relative;z-index:1}
+.card-title{font-size:15px;font-weight:700;margin-bottom:6px;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.card-author{font-size:12px;color:var(--text3);margin-bottom:8px;display:flex;align-items:center;gap:4px}
+.card-author svg{width:12px;height:12px;flex-shrink:0}
+.card-desc{font-size:13px;color:var(--text2);line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-bottom:12px}
+.card-footer{display:flex;justify-content:space-between;align-items:center;padding-top:12px;border-top:1px solid var(--border)}
+.card-stats{display:flex;gap:12px;font-size:12px;color:var(--text3)}
+.card-stats span{display:flex;align-items:center;gap:4px}
+.card-stats svg{width:14px;height:14px;flex-shrink:0}
+.card-download{padding:6px 14px;border-radius:var(--radius-xs);background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-size:12px;font-weight:600;text-decoration:none;transition:var(--transition);display:flex;align-items:center;gap:4px}
+.card-download:hover{box-shadow:var(--neon2);transform:scale(1.05)}
+.card-tags{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:10px}
+.card-tag{padding:2px 8px;border-radius:100px;background:rgba(124,58,237,0.1);font-size:10px;font-weight:500;color:var(--accent3);text-transform:capitalize}
+.skeleton .card-thumb,.skeleton .card-title,.skeleton .card-author,.skeleton .card-desc,.skeleton .card-footer{background:linear-gradient(90deg,var(--surface) 25%,var(--surface-hover) 50%,var(--surface) 75%);background-size:400px 100%;animation:shimmer 1.8s ease-in-out infinite;border-radius:var(--radius-xs);color:transparent !important}
+@keyframes shimmer{0%{background-position:-400px 0}100%{background-position:400px 0}}
+.skeleton .card-thumb{aspect-ratio:16/9;border-radius:var(--radius-sm)}
+.skeleton .card-title{height:18px;width:70%;margin-bottom:8px}
+.skeleton .card-author{height:14px;width:40%;margin-bottom:8px}
+.skeleton .card-desc{height:32px;width:100%;margin-bottom:12px}
+.skeleton .card-footer{height:20px;width:100%;border-top:none;padding:0}
+.skeleton .card-tags,.skeleton .card-stats,.skeleton .card-download{display:none}
+.skeleton .card-category{display:none}
+.skeleton .card-body>*{color:transparent !important}
+.loading-container{text-align:center;padding:40px 0}
+.spinner{width:36px;height:36px;border:3px solid var(--border);border-top-color:var(--accent2);border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto 12px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading-text{font-size:13px;color:var(--text3)}
+.error-container{text-align:center;padding:60px 20px;grid-column:1/-1}
+.error-icon{font-size:48px;margin-bottom:12px;opacity:0.5}
+.error-title{font-size:18px;font-weight:600;margin-bottom:8px;color:var(--text)}
+.error-desc{font-size:14px;color:var(--text3);margin-bottom:20px}
+.error-retry{padding:10px 24px;border-radius:var(--radius-sm);background:var(--accent);color:#fff;border:none;cursor:pointer;font-size:13px;font-weight:600;font-family:var(--font);transition:var(--transition)}
+.error-retry:hover{background:var(--accent2)}
+.load-more-container{text-align:center;padding:20px 0 40px}
+.load-more-btn{padding:12px 36px;border-radius:100px;background:var(--surface);border:1px solid var(--border);color:var(--text2);font-size:14px;font-weight:600;cursor:pointer;font-family:var(--font);transition:var(--transition)}
+.load-more-btn:hover{background:var(--surface-hover);border-color:var(--accent);color:var(--text)}
+.load-more-btn:disabled{opacity:0.4;cursor:not-allowed}
+footer{position:relative;z-index:1;text-align:center;padding:40px 0;border-top:1px solid var(--border);color:var(--text3);font-size:13px}
+footer a{color:var(--accent3);text-decoration:none;cursor:pointer}
+footer a:hover{text-decoration:underline}
+footer .credit{margin-top:6px;font-size:12px;color:var(--text2)}
+footer .credit span{color:var(--accent3);font-weight:600}
+@media(max-width:768px){
+  .tabs-inner{max-width:100%;border-radius:var(--radius-sm);overflow-x:auto;flex-wrap:nowrap}
+  .tabs-inner::-webkit-scrollbar{display:none}
+  .tab-btn{font-size:11px;padding:8px 12px}
+  .tab-btn .count{font-size:9px}
+  .grid{grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px}
+  .search-bar{border-radius:var(--radius-sm);flex-direction:column}
+  .search-bar input{padding:14px 18px}
+  .search-bar button{padding:12px 18px;border-top:1px solid var(--border);width:100%;justify-content:center}
+  .hero{padding:100px 0 30px}
+  .hero h1{font-size:30px}
+  .card{padding:16px}
+}
+@media(max-width:480px){
+  .grid{grid-template-columns:1fr}
+  .nav-brand span{font-size:16px}
+}
+</style>
+</head>
+<body>
+
+<div class="bg-grid"></div>
+<div class="bg-glow bg-glow-1"></div>
+<div class="bg-glow bg-glow-2"></div>
+
+<nav id="navbar">
+  <div class="nav-inner">
+    <a href="#" class="nav-brand">
+      <div class="nav-logo">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+          <path d="M2 17l10 5 10-5"/>
+          <path d="M2 12l10 5 10-5"/>
+        </svg>
+      </div>
+      <span>SwiftXOg</span>
+    </a>
+    <button class="nav-search-btn" id="navSearchBtn" aria-label="Search">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+      Search...
+    </button>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-shapes">
+    <div class="hero-shape hero-shape-1"></div>
+    <div class="hero-shape hero-shape-2"></div>
+  </div>
+  <div style="max-width:1280px;margin:0 auto;padding:0 24px">
+    <div class="hero-badge">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/></svg>
+      Live Data &mdash; Powered by Modrinth API
+    </div>
+    <h1>Discover <span>Minecraft</span><br/>Mods, Shaders &amp; Packs</h1>
+    <p>Explore thousands of community-created mods, stunning shader packs, and resource packs. Sourced directly from Modrinth.</p>
+  </div>
+</section>
+
+<section class="search-section">
+  <div style="max-width:1280px;margin:0 auto;padding:0 24px">
+    <div class="search-bar">
+      <input type="text" id="searchInput" placeholder="Search mods, shaders, packs..." autocomplete="off" />
+      <button id="searchBtn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg> Search</button>
+    </div>
+  </div>
+</section>
+
+<section class="tabs">
+  <div style="max-width:1280px;margin:0 auto;padding:0 24px">
+    <div class="tabs-inner" id="tabContainer">
+      <button class="tab-btn active" data-tab="mods">Mods <span class="count" id="count-mods"></span></button>
+      <button class="tab-btn" data-tab="shaders">Shaders <span class="count" id="count-shaders"></span></button>
+      <button class="tab-btn" data-tab="resourcepacks">Resource Packs <span class="count" id="count-resourcepacks"></span></button>
+      <button class="tab-btn" data-tab="datapacks">Data Packs <span class="count" id="count-datapacks"></span></button>
+    </div>
+  </div>
+</section>
+
+<section class="grid-section">
+  <div style="max-width:1280px;margin:0 auto;padding:0 24px">
+    <div class="grid-header">
+      <h2 id="gridTitle">Trending Mods</h2>
+      <span class="total" id="totalHits">0 results</span>
+    </div>
+    <div class="grid" id="resultsGrid"></div>
+    <div class="load-more-container" id="loadMoreContainer">
+      <button class="load-more-btn" id="loadMoreBtn">Load More</button>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div style="max-width:1280px;margin:0 auto;padding:0 24px">
+    <p>SwiftXOg &mdash; Powered by <a href="https://modrinth.com" target="_blank">Modrinth API</a></p>
+    <p class="credit">Made by <span>GameSwift</span> &amp; <span>OGBISCUT</span></p>
+    <p style="margin-top:4px;font-size:12px;color:var(--text3)">For browsing purposes. All content belongs to its respective creators.</p>
+  </div>
+</footer>
+
+<script>
+(function() {
+var MODRINTH_API = 'https://api.modrinth.com/v2';
+var TAB_TYPES = {
+  mods: ['mod'],
+  shaders: ['shader'],
+  resourcepacks: ['resourcepack'],
+  datapacks: ['datapack']
+};
+var TAB_LABELS = {
+  mods: 'Mods',
+  shaders: 'Shaders',
+  resourcepacks: 'Resource Packs',
+  datapacks: 'Data Packs'
+};
+var PAGE_SIZE = 24;
+
+var currentTab = 'mods';
+var currentQuery = '';
+var isLoading = false;
+var currentOffset = 0;
+var totalHits = 0;
+var hasMore = true;
+var scrollThrottle = false;
+
+function $(s) { return document.querySelector(s); }
+function $$(s) { return document.querySelectorAll(s); }
+
+var grid = $('#resultsGrid');
+var gridTitle = $('#gridTitle');
+var totalHitsEl = $('#totalHits');
+var searchInput = $('#searchInput');
+var searchBtn = $('#searchBtn');
+var loadMoreBtn = $('#loadMoreBtn');
+var loadMoreCont = $('#loadMoreContainer');
+var tabBtns = $$('.tab-btn');
+var navSearchBtn = $('#navSearchBtn');
+var navbar = $('#navbar');
+
+function formatNum(n) {
+  if (n === null || n === undefined || n === 0) return '';
+  if (n >= 1000000) return (n/1000000).toFixed(1) + 'M';
+  if (n >= 1000) return (n/1000).toFixed(1) + 'K';
+  return n.toLocaleString();
+}
+
+function showSkeleton(count) {
+  count = count || 12;
+  grid.innerHTML = '';
+  for (var i = 0; i < count; i++) {
+    var card = document.createElement('div');
+    card.className = 'card skeleton';
+    card.innerHTML = '<div class="card-thumb"></div><div class="card-body"><div class="card-title">&nbsp;</div><div class="card-author">&nbsp;</div><div class="card-desc">&nbsp;</div><div class="card-footer">&nbsp;</div></div>';
+    grid.appendChild(card);
+  }
+  loadMoreCont.style.display = 'none';
+}
+
+function hideSkeleton() {
+  var els = $$('.skeleton');
+  for (var i = 0; i < els.length; i++) { els[i].remove(); }
+}
+
+function renderCard(item) {
+  var projectType = item.project_type || 'mod';
+  var slug = item.slug || item.project_id;
+  var url = 'https://modrinth.com/' + (projectType === 'shader' ? 'shader' : projectType) + '/' + slug;
+  var cat = (item.display_categories && item.display_categories[0]) || (item.categories && item.categories[0]) || projectType;
+  var desc = (item.description || '').substring(0, 120);
+  var iconSrc = item.icon_url || 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="400" height="225" viewBox="0 0 400 225"><rect width="400" height="225" fill="#1a1a2e"/><text x="200" y="110" text-anchor="middle" fill="#686880" font-family="sans-serif" font-size="14">' + item.title.substring(0, 20) + '</text></svg>');
+
+  var card = document.createElement('div');
+  card.className = 'card';
+  card.setAttribute('data-url', url);
+
+  var tagsHtml = '';
+  if (item.categories && item.categories.length > 0) {
+    tagsHtml = '<div class="card-tags">';
+    var maxTags = Math.min(3, item.categories.length);
+    for (var t = 0; t < maxTags; t++) {
+      tagsHtml += '<span class="card-tag">' + item.categories[t] + '</span>';
+    }
+    tagsHtml += '</div>';
+  }
+
+  card.innerHTML = '<div class="card-thumb"><span class="card-category">' + cat + '</span><img src="' + iconSrc + '" alt="' + item.title + '" loading="lazy" onerror="this.style.display=\'none\'"></div><div class="card-body"><div class="card-title">' + item.title + '</div><div class="card-author"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> ' + item.author + '</div>' + tagsHtml + '<div class="card-desc">' + desc + '</div><div class="card-footer"><div class="card-stats"><span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m1 12 4-4"/><path d="m23 12-4-4"/><path d="M21 12v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-6"/><path d="M14 2v4"/><path d="M10 2v4"/><path d="M10 18v-6"/><path d="M14 18v-6"/><rect x="8" y="6" width="8" height="1"/></svg> ' + formatNum(item.downloads) + '</span><span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.29 1.51 4.04 3 5.5l7 7Z"/></svg> ' + formatNum(item.follows) + '</span></div><a href="' + url + '" target="_blank" class="card-download" onclick="event.stopPropagation()"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Get</a></div></div>';
+
+  card.addEventListener('click', function() {
+    window.open(url, '_blank');
+  });
+
+  return card;
+}
+
+async function fetchProjects(tab, query, offset, limit) {
+  var types = TAB_TYPES[tab];
+  if (!types || types.length === 0) return null;
+
+  var params = new URLSearchParams();
+  params.set('limit', String(limit));
+  params.set('offset', String(offset));
+  params.set('index', 'downloads');
+
+  var facetArr = [];
+  for (var i = 0; i < types.length; i++) {
+    facetArr.push('project_type:' + types[i]);
+  }
+  params.set('facets', JSON.stringify([facetArr]));
+
+  if (query) params.set('query', query);
+
+  var res = await fetch(MODRINTH_API + '/search?' + params.toString(), {
+    headers: { 'User-Agent': 'SwiftXOg/1.0' }
+  });
+  if (!res.ok) throw new Error('API error: ' + res.status);
+  return res.json();
+}
+
+async function loadItems(opts) {
+  opts = opts || {};
+  var append = opts.append || false;
+  if (isLoading) return;
+  isLoading = true;
+
+  if (!append) {
+    currentOffset = 0;
+    hasMore = true;
+    showSkeleton();
+  }
+
+  try {
+    var data = await fetchProjects(currentTab, currentQuery, currentOffset, PAGE_SIZE);
+    if (!data) {
+      grid.innerHTML = '<div class="error-container"><div class="error-icon">⚠️</div><div class="error-title">No data</div></div>';
+      loadMoreCont.style.display = 'none';
+      isLoading = false;
+      return;
+    }
+
+    var items = data.hits || [];
+    currentOffset += items.length;
+    totalHits = data.total_hits || 0;
+    hasMore = currentOffset < totalHits;
+
+    if (append) {
+      hideSkeleton();
+      for (var i = 0; i < items.length; i++) {
+        grid.appendChild(renderCard(items[i]));
+      }
+    } else {
+      grid.innerHTML = '';
+      for (var i = 0; i < items.length; i++) {
+        grid.appendChild(renderCard(items[i]));
+      }
+    }
+
+    var label = TAB_LABELS[currentTab] || currentTab;
+    totalHitsEl.textContent = formatNum(totalHits) + ' results';
+    gridTitle.textContent = currentQuery ? label + ' matching "' + currentQuery + '"' : 'Trending ' + label;
+
+    if (!hasMore || items.length === 0) {
+      loadMoreCont.style.display = 'none';
+    } else {
+      loadMoreCont.style.display = 'block';
+    }
+    loadMoreBtn.textContent = hasMore ? 'Load More' : 'All Loaded';
+    loadMoreBtn.disabled = !hasMore;
+  } catch (err) {
+    console.error(err);
+    hideSkeleton();
+    grid.innerHTML = '<div class="error-container"><div class="error-icon">⚠️</div><div class="error-title">Failed to load data</div><div class="error-desc">' + (err.message || 'Something went wrong.') + '</div><button class="error-retry" onclick="window.location.reload()">Retry</button></div>';
+    loadMoreCont.style.display = 'none';
+  }
+
+  isLoading = false;
+}
+
+function switchTab(tab) {
+  currentTab = tab;
+  currentQuery = searchInput.value.trim();
+  currentOffset = 0;
+  hasMore = true;
+
+  for (var i = 0; i < tabBtns.length; i++) {
+    if (tabBtns[i].dataset.tab === tab) {
+      tabBtns[i].classList.add('active');
+    } else {
+      tabBtns[i].classList.remove('active');
+    }
+  }
+
+  searchInput.placeholder = 'Search ' + (TAB_LABELS[tab] || tab) + '...';
+  loadItems();
+}
+
+async function fetchCount(type) {
+  try {
+    var r = await fetch(MODRINTH_API + '/search?facets=' + encodeURIComponent(JSON.stringify([[ 'project_type:' + type ]])) + '&limit=1', {
+      headers: { 'User-Agent': 'SwiftXOg/1.0' }
+    });
+    var d = await r.json();
+    return d.total_hits || 0;
+  } catch(e) {
+    return 0;
+  }
+}
+
+async function initCounts() {
+  var types = ['mods', 'shaders', 'resourcepacks', 'datapacks'];
+  var apiTypes = ['mod', 'shader', 'resourcepack', 'datapack'];
+  for (var i = 0; i < types.length; i++) {
+    var count = await fetchCount(apiTypes[i]);
+    var el = document.getElementById('count-' + types[i]);
+    if (el) el.textContent = formatNum(count);
+  }
+}
+
+function doSearch() {
+  currentQuery = searchInput.value.trim();
+  loadItems();
+}
+
+for (var i = 0; i < tabBtns.length; i++) {
+  (function(btn) {
+    btn.addEventListener('click', function() {
+      switchTab(btn.dataset.tab);
+    });
+  })(tabBtns[i]);
+}
+
+searchBtn.addEventListener('click', doSearch);
+searchInput.addEventListener('keydown', function(e) { if (e.key === 'Enter') doSearch(); });
+
+navSearchBtn.addEventListener('click', function() {
+  document.querySelector('.search-section').scrollIntoView({ behavior: 'smooth' });
+  setTimeout(function() { searchInput.focus(); }, 500);
+});
+
+loadMoreBtn.addEventListener('click', function() { loadItems({ append: true }); });
+
+window.addEventListener('scroll', function() {
+  if (scrollThrottle) return;
+  scrollThrottle = true;
+  window.requestAnimationFrame(function() {
+    scrollThrottle = false;
+    if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 800 && !isLoading && hasMore) {
+      loadItems({ append: true });
+    }
+  });
+}, { passive: true });
+
+window.addEventListener('scroll', function() {
+  if (window.scrollY > 50) {
+    navbar.classList.add('scrolled');
+  } else {
+    navbar.classList.remove('scrolled');
+  }
+}, { passive: true });
+
+initCounts();
+switchTab('mods');
+})();
+</script>
+</body>
+</html>
